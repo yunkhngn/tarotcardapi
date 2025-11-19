@@ -6,6 +6,8 @@ import {
   Button, 
   Spinner
 } from '@heroui/react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import AppNavbar from '../components/Navbar';
 import Metadata from '../components/Metadata';
 
@@ -133,10 +135,9 @@ export default function Reading() {
             <Button
               className="bg-white text-black hover:bg-gray-200 min-w-[50px]"
               onClick={handleReading}
-              isLoading={loading}
               disabled={loading || !question.trim()}
             >
-              {loading ? <Spinner size="sm" /> : '↑'}
+              ↑
             </Button>
           </div>
 
@@ -216,13 +217,29 @@ export default function Reading() {
               Phân Tích Tarot
             </h2>
             <div 
-              className="text-white/90 leading-relaxed whitespace-pre-line"
+              className="text-white/90 leading-relaxed markdown-content"
               style={{ 
                 fontSize: '1.1rem',
                 lineHeight: '2'
               }}
             >
-              {analysis}
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={{
+                  h1: ({node, ...props}) => <h1 className="text-2xl font-bold text-[#D4AF37] mt-6 mb-4" {...props} />,
+                  h2: ({node, ...props}) => <h2 className="text-xl font-bold text-[#D4AF37] mt-5 mb-3" {...props} />,
+                  h3: ({node, ...props}) => <h3 className="text-lg font-bold text-[#D4AF37] mt-4 mb-2" {...props} />,
+                  p: ({node, ...props}) => <p className="mb-4" {...props} />,
+                  strong: ({node, ...props}) => <strong className="font-bold text-white" {...props} />,
+                  em: ({node, ...props}) => <em className="italic text-white/80" {...props} />,
+                  ul: ({node, ...props}) => <ul className="list-disc list-inside my-4 space-y-2 ml-4" {...props} />,
+                  ol: ({node, ...props}) => <ol className="list-decimal list-inside my-4 space-y-2 ml-4" {...props} />,
+                  li: ({node, ...props}) => <li className="ml-2" {...props} />,
+                  blockquote: ({node, ...props}) => <blockquote className="border-l-4 border-[#D4AF37] pl-4 my-4 italic text-white/80" {...props} />,
+                }}
+              >
+                {analysis}
+              </ReactMarkdown>
             </div>
           </div>
         )}

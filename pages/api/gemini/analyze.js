@@ -21,7 +21,6 @@ export default async function handler(req, res) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    // Use gemini-1.5-flash (faster) or gemini-1.5-pro (more capable)
     const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
 
     const cardDescriptions = cards.map((card, index) => {
@@ -36,13 +35,33 @@ Câu hỏi của người dùng: "${question}"
 Ba lá bài Tarot:
 ${cardDescriptions}
 
-Hãy đưa ra một phân tích chi tiết, sâu sắc và có ý nghĩa về câu hỏi này dựa trên ý nghĩa của 3 lá bài. Phân tích nên bao gồm:
-1. Ý nghĩa tổng quan của từng lá bài trong bối cảnh câu hỏi
-2. Mối liên hệ giữa 3 lá bài (quá khứ, hiện tại, tương lai)
-3. Lời khuyên và hướng dẫn cụ thể dựa trên kết quả
-4. Kết luận và triển vọng
+YÊU CẦU FORMAT MARKDOWN:
+- Viết bằng tiếng Việt, giọng điệu ấm áp, chân thành
+- Sử dụng markdown: **in đậm** cho tiêu đề quan trọng, *in nghiêng* cho nhấn mạnh, - gạch đầu dòng cho danh sách
+- Chỉ viết ĐÚNG 4 đoạn, mỗi đoạn khoảng 3-4 dòng
+- Format rõ ràng, dễ đọc với markdown
 
-Hãy viết bằng tiếng Việt, giọng điệu ấm áp, chân thành và mang tính hướng dẫn.`;
+CẤU TRÚC:
+**1. Ý nghĩa tổng quan**
+- Phân tích ngắn gọn về 3 lá bài trong bối cảnh câu hỏi
+- Sử dụng **in đậm** cho tên lá bài quan trọng
+- Khoảng 3-4 dòng
+
+**2. Mối liên hệ**
+- Giải thích mối liên hệ giữa quá khứ, hiện tại và tương lai
+- Sử dụng *in nghiêng* để nhấn mạnh điểm quan trọng
+- Khoảng 3-4 dòng
+
+**3.: Lời khuyên**
+- Đưa ra lời khuyên cụ thể dựa trên kết quả
+- Sử dụng gạch đầu dòng (-) cho các lời khuyên
+- Khoảng 3-4 dòng
+
+**Kết luận**
+- Tóm tắt và triển vọng
+- Khoảng 3-4 dòng
+
+Hãy viết ngắn gọn, súc tích, sử dụng markdown để làm nổi bật các phần quan trọng.`;
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
