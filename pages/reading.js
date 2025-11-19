@@ -65,9 +65,15 @@ export default function Reading() {
         let errorMessage = 'Không thể phân tích bài';
         try {
           const errorData = JSON.parse(errorText);
-          errorMessage = errorData.details || errorData.error || errorMessage;
-          if (errorData.type) {
-            errorMessage += ` (${errorData.type})`;
+          
+          // Handle rate limit error (429)
+          if (analysisResponse.status === 429) {
+            errorMessage = errorData.message || `Vui lòng đợi ${errorData.remainingMinutes || 0} phút ${errorData.remainingSeconds || 0} giây trước khi bói lại.`;
+          } else {
+            errorMessage = errorData.details || errorData.error || errorMessage;
+            if (errorData.type) {
+              errorMessage += ` (${errorData.type})`;
+            }
           }
         } catch (e) {
           errorMessage = `Lỗi ${analysisResponse.status}: ${errorText.substring(0, 100)}`;

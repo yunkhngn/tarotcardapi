@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { checkRateLimit } from '../../../utils/rateLimiter';
 
 export default async function handler(req, res) {
   // Set content type to JSON
@@ -9,6 +10,23 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Rate limiting check
+    const clientIp = req.headers['x-forwarded-for']?.split(',')[0] || 
+                     req.headers['x-real-ip'] || 
+                     req.socket.remoteAddress || 
+                     'unknown';
+    
+    const rateLimitResult = checkRateLimit(clientIp);
+    if (!rateLimitResult.allowed) {
+      return res.status(429).json({
+        error: 'Rate limit exceeded',
+        message: rateLimitResult.message,
+        remainingTime: rateLimitResult.remainingTime,
+        remainingMinutes: rateLimitResult.remainingMinutes,
+        remainingSeconds: rateLimitResult.remainingSeconds
+      });
+    }
+
     const { question, cards } = req.body;
 
     if (!question || !cards || !Array.isArray(cards) || cards.length !== 3) {
@@ -57,7 +75,7 @@ CẤU TRÚC:
 - Sử dụng gạch đầu dòng (-) cho các lời khuyên
 - Khoảng 3-4 dòng
 
-**Kết luận**
+**Kết luận:**
 - Tóm tắt và triển vọng
 - Khoảng 3-4 dòng
 
