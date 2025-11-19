@@ -1,7 +1,5 @@
-const express = require("express");
-const router = express.Router();
-
-const tarotCards = [
+// Tarot Cards Data
+export const tarotCards = [
   {
     name: "The Fool",
     description:
@@ -472,30 +470,3 @@ const tarotCards = [
   },
 ];
 
-// Define the '/cards' endpoint to retrieve all cards
-router.get("/", (req, res) => {
-  res.json(tarotCards);
-});
-
-router.get("/onecard", (req, res) => {
-  const randomIndex = Math.floor(Math.random() * tarotCards.length);
-  const randomCard = tarotCards[randomIndex];
-  res.json(randomCard);
-});
-
-router.get("/threecards", (req, res) => {
-  // Create a copy of the array to avoid modifying the original
-  const shuffled = [...tarotCards];
-  
-  // Fisher-Yates shuffle algorithm
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  
-  // Return first 3 cards from shuffled array
-  const threeCards = shuffled.slice(0, 3);
-  res.json(threeCards);
-});
-
-module.exports = router;

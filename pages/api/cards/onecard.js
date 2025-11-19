@@ -1,0 +1,13 @@
+import { tarotCards } from '../../../data/tarotCards';
+
+export default function handler(req, res) {
+  if (req.method === 'GET') {
+    const randomIndex = Math.floor(Math.random() * tarotCards.length);
+    const randomCard = tarotCards[randomIndex];
+    res.status(200).json(randomCard);
+  } else {
+    res.setHeader('Allow', ['GET']);
+    res.status(405).json({ error: `Method ${req.method} not allowed` });
+  }
+}
+

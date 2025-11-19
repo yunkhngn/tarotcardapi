@@ -1,21 +1,27 @@
 {
-  "name": "tarotapi",
+  "name": "tarot-reader",
   "version": "1.0.1",
-  "description": "A comprehensive Tarot card API built with Node.js, providing developers with easy access to a vast collection of Tarot card meanings, interpretations, and symbolism. This API allows users to retrieve Tarot card details, including card images, descriptions, upright and reversed meanings, and associated keywords. Harness the power of Tarot to enhance your applications, websites, or personal projects with this intuitive and versatile API.",
-  "main": "app.js",
+  "description": "A comprehensive Tarot card API built with Next.js, providing developers with easy access to a vast collection of Tarot card meanings, interpretations, and symbolism. This API allows users to retrieve Tarot card details, including card images, descriptions, upright and reversed meanings, and associated keywords. Harness the power of Tarot to enhance your applications, websites, or personal projects with this intuitive and versatile API.",
   "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
   },
   "keywords": [
     "tarotcard",
-    "tarot"
+    "tarot",
+    "nextjs"
   ],
-  "author": "Kushagra Srivastava",
+  "author": "yunkhngn",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "nodemon": "^2.0.22"
+    "next": "^14.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "eslint-config-next": "^14.0.0"
   }
 }
