@@ -1,7 +1,7 @@
 {
   "name": "tarot-reader",
   "version": "1.0.1",
-  "description": "A comprehensive Tarot card API built with Next.js, providing developers with easy access to a vast collection of Tarot card meanings, interpretations, and symbolism. This API allows users to retrieve Tarot card details, including card images, descriptions, upright and reversed meanings, and associated keywords. Harness the power of Tarot to enhance your applications, websites, or personal projects with this intuitive and versatile API.",
+  "description": "Tarot Reader - A modern web application for Tarot card readings built with Next.js. Explore the mystical world of Tarot with beautiful card readings, interpretations, and spreads. Get daily readings, three-card spreads, and access to all 78 Tarot cards with detailed meanings and symbolism.",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -9,9 +9,13 @@
     "lint": "next lint"
   },
   "keywords": [
-    "tarotcard",
     "tarot",
-    "nextjs"
+    "tarot-reader",
+    "tarot-cards",
+    "tarot-reading",
+    "divination",
+    "nextjs",
+    "heroui"
   ],
   "author": "yunkhngn",
   "license": "MIT",
@@ -21,6 +25,7 @@
     "react-dom": "^18.2.0",
     "@heroui/react": "^2.2.9",
     "@heroui/theme": "^2.2.9",
+    "@google/generative-ai": "^0.2.1",
     "framer-motion": "^10.16.16"
   },
   "devDependencies": {

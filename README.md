@@ -1,16 +1,16 @@
-# 🔮 Tarot Card API - Next.js Edition
+# 🔮 Tarot Reader
 
-A comprehensive Tarot Card API and Web Application built with Next.js, providing developers with easy access to a vast collection of Tarot card meanings, interpretations, and symbolism. This project includes both a RESTful API and a beautiful web interface to explore Tarot cards.
+A modern web application for Tarot card readings built with Next.js. Explore the mystical world of Tarot with beautiful card readings, interpretations, and spreads. Get daily readings, three-card spreads, and access to all 78 Tarot cards with detailed meanings and symbolism.
 
 ## 🌟 Features
 
-- **Full Web Application**: Beautiful, responsive web interface to browse and explore Tarot cards
+- **Tarot Card Readings**: Get personalized Tarot card readings and interpretations
+- **Daily Readings**: Draw a random card for daily guidance
+- **Three Card Spread**: Traditional past, present, future reading spread
+- **Complete Tarot Deck**: Access all 78 Tarot cards with detailed meanings
+- **Beautiful UI**: Modern, responsive interface built with HeroUI and Tailwind CSS
 - **RESTful API**: Easy-to-use API endpoints for developers
-- **Random Card Selector**: Get random Tarot cards for readings
-- **Three Card Spread**: Traditional past, present, future reading
-- **Full Card Listing**: Access all 78 Tarot cards with images and descriptions
 - **High-Quality Images**: Each card comes with a beautifully designed image
-- **Modern UI**: Gradient backgrounds, smooth animations, and responsive design
 
 ## 🚀 Getting Started
 
@@ -99,7 +99,9 @@ Returns three random, non-duplicate Tarot cards (perfect for spreads).
 
 - **Next.js 14**: React framework with API routes
 - **React 18**: UI library
-- **CSS3**: Modern styling with gradients and animations
+- **HeroUI**: Modern UI component library
+- **Tailwind CSS**: Utility-first CSS framework
+- **Framer Motion**: Animation library
 
 ## 📦 Build & Deploy
 
@@ -148,15 +150,15 @@ Or simply connect your GitHub repository to Vercel for automatic deployments.
 
 ## 🔮 Ideal For
 
-- Tarot reading websites and apps
-- Spiritual and astrological content creators
-- Personal projects exploring divination and Tarot
-- Educational purposes in learning APIs or Tarot card meanings
-- Full-stack web development projects
+- Daily Tarot card readings and guidance
+- Exploring Tarot card meanings and interpretations
+- Learning about Tarot symbolism and spreads
+- Spiritual and personal growth
+- Developers looking to integrate Tarot functionality
 
 ## 🤝 Contributing
 
-Suggestions, improvements, and pull requests are welcome! Let's make this the best Tarot Card API out there!
+Suggestions, improvements, and pull requests are welcome! Let's make this the best Tarot Reader application out there!
 
 ## 📄 License
 
@@ -169,4 +171,4 @@ MIT License - feel free to use this project for personal or commercial purposes.
 
 ---
 
-**Embrace the mystical and enhance your projects with our Free Tarot Card API!** ✨
+**Embrace the mystical and discover your path with Tarot Reader!** ✨
