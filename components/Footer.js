@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 export default function Footer() {
   const links = [
     { label: 'Bói bài tarot', href: '/reading' },
-    { label: 'Library bài', href: '/library' },
+    { label: 'Bài tarot', href: '/library' },
     { label: 'API Docs', href: '/api-docs' },
   ];
   const router = useRouter();

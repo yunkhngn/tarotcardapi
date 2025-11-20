@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Input, Spinner, Button } from '@heroui/react';
+import { Card, CardBody, Input, Spinner, Button } from '@heroui/react';
 import Image from 'next/image';
 import AppNavbar from '../components/Navbar';
 import Metadata from '../components/Metadata';
@@ -56,48 +56,52 @@ export default function Library() {
         <AppNavbar />
       
       <div className="container mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-7xl flex-1">
-        <div className="bg-[#2a2a2a] border border-gray-700 rounded-2xl p-6 sm:p-8 mb-8">
-          <h1 className="text-3xl sm:text-4xl font-serif text-[#D4AF37] mb-4 text-center">
-            Library Bài Tarot
-          </h1>
-          <p className="text-white/80 mb-6 text-center text-base sm:text-lg">
-            Khám phá tất cả 78 lá bài Tarot và ý nghĩa của chúng
-          </p>
-          
-          <Input
-            placeholder="Tìm kiếm bài..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full max-w-2xl mx-auto"
-            classNames={{
-              input: "text-white placeholder:text-gray-400 text-base sm:text-lg",
-
-              // Lớp trong, nơi HeroUI hay tự đổi màu -> khoá luôn lại
-              innerWrapper: `
-                bg-[#1a1a1a]
-                data-[hover=true]:bg-[#1a1a1a]
-                data-[focus=true]:bg-[#1a1a1a]
-                group-data-[focus=true]:bg-[#1a1a1a]
-                px-4 py-3
-              `,
-
-              // Lớp ngoài – border và nền tổng
-              inputWrapper: `
-                bg-[#1a1a1a]
-                border border-gray-700
-                hover:border-[#D4AF37]/50
-                focus-within:border-[#D4AF37]
-                data-[hover=true]:bg-[#1a1a1a]
-                data-[focus=true]:bg-[#1a1a1a]
-                group-data-[focus=true]:bg-[#1a1a1a]
-                focus-within:ring-0
-                outline-none
-                rounded-xl
-              `,
-            }}
-          />
-
-        </div>
+        <Card className="bg-[#111010] border border-[#2a1f17] rounded-[32px] shadow-[0_25px_80px_rgba(0,0,0,0.45)] mb-10">
+          <CardBody className="p-6 sm:p-10">
+            <p className="text-center text-xs md:text-sm tracking-[0.5em] text-[#c08b45] uppercase mb-4">
+              Library
+            </p>
+            <h1 className="text-2xl sm:text-4xl font-serif text-[#f5f0e5] text-center mb-4">
+              Library Bài Tarot
+            </h1>
+            <p className="text-white/70 text-center max-w-2xl mx-auto text-sm sm:text-base leading-relaxed mb-6">
+              Khám phá tất cả 78 lá bài Tarot và ý nghĩa của chúng. Hover vào lá bài để xem tên, click để xem chi tiết.
+            </p>
+            
+            <div className="max-w-2xl mx-auto">
+              <Input
+                placeholder="Tìm kiếm bài..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full"
+                classNames={{
+                  input: "text-white placeholder:text-[#5f5f60] text-base sm:text-lg",
+                  innerWrapper: `
+                    bg-[#262626]
+                    data-[hover=true]:bg-[#262626]
+                    data-[focus=true]:bg-[#262626]
+                    group-data-[focus=true]:bg-[#262626]
+                    px-5 sm:px-6 py-4
+                  `,
+                  inputWrapper: `
+                    bg-[#262626]
+                    border border-[#3a3a3c]
+                    hover:border-[#4a4a4c]
+                    focus-within:border-[#4a4a4c]
+                    data-[hover=true]:bg-[#262626]
+                    data-[focus=true]:bg-[#262626]
+                    group-data-[focus=true]:bg-[#262626]
+                    focus-within:ring-0
+                    outline-none
+                    rounded-[28px]
+                    shadow-[0_15px_45px_rgba(0,0,0,0.45)]
+                    transition-all
+                  `,
+                }}
+              />
+            </div>
+          </CardBody>
+        </Card>
 
         {loading ? (
           <div className="flex justify-center items-center py-20">

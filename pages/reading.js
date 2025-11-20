@@ -3,6 +3,7 @@ import { Card, CardBody, Button, Spinner, Textarea } from '@heroui/react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Image from 'next/image';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 import AppNavbar from '../components/Navbar';
 import Metadata from '../components/Metadata';
 import Footer from '../components/Footer';
@@ -35,8 +36,12 @@ export default function Reading() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isLoadingCards, setIsLoadingCards] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
+  const [hCaptchaToken, setHCaptchaToken] = useState(null);
+  const [hCaptchaSiteKey, setHCaptchaSiteKey] = useState(null);
   const analysisRef = useRef(null);
   const rowRef = useRef(null);
+  const hCaptchaRef = useRef(null);
+  const isProduction = process.env.NODE_ENV === 'production';
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -54,6 +59,23 @@ export default function Reading() {
     };
     fetchCards();
   }, []);
+
+  useEffect(() => {
+    if (isProduction) {
+      const fetchHCaptchaSiteKey = async () => {
+        try {
+          const res = await fetch('/api/hcaptcha-sitekey');
+          const data = await res.json();
+          if (data.siteKey) {
+            setHCaptchaSiteKey(data.siteKey);
+          }
+        } catch (error) {
+          console.error('Failed to fetch hCaptcha site key:', error);
+        }
+      };
+      fetchHCaptchaSiteKey();
+    }
+  }, [isProduction]);
 
   const resetSpread = () => {
     if (!allCards.length) return;
@@ -178,7 +200,19 @@ export default function Reading() {
       alert('Vui lòng chọn đủ 3 lá bài');
       return;
     }
+    if (isProduction && !hCaptchaToken) {
+      alert('Vui lòng hoàn thành xác thực hCaptcha');
+      return;
+    }
     analyzeCards(selectedCards);
+  };
+
+  const handleHCaptchaVerify = (token) => {
+    setHCaptchaToken(token);
+  };
+
+  const handleHCaptchaExpire = () => {
+    setHCaptchaToken(null);
   };
 
   const handleSuggestedQuestion = (suggestedQ) => {
@@ -197,6 +231,7 @@ export default function Reading() {
         body: JSON.stringify({
           question: question.trim() || 'Hãy phân tích 3 lá bài Tarot này cho tôi.',
           cards: cardsToAnalyze,
+          hCaptchaToken: hCaptchaToken,
         }),
       });
 
@@ -229,6 +264,14 @@ export default function Reading() {
       }
       setAnalysis(data.analysis);
 
+      // Reset hCaptcha after successful submission (only in production)
+      if (isProduction && hCaptchaRef.current) {
+        hCaptchaRef.current.resetCaptcha();
+      }
+      if (isProduction) {
+        setHCaptchaToken(null);
+      }
+
       setTimeout(() => {
         if (analysisRef.current) {
           analysisRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -237,6 +280,13 @@ export default function Reading() {
     } catch (error) {
       console.error(error);
       alert('Có lỗi xảy ra: ' + error.message);
+      // Reset hCaptcha on error (only in production)
+      if (isProduction && hCaptchaRef.current) {
+        hCaptchaRef.current.resetCaptcha();
+      }
+      if (isProduction) {
+        setHCaptchaToken(null);
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -458,10 +508,20 @@ export default function Reading() {
             </div>
             
             {selectedCards.length === 3 && (
-              <div className="flex justify-center">
+              <div className="flex flex-col items-center gap-4">
+                {isProduction && hCaptchaSiteKey && (
+                  <div className="flex justify-center">
+                    <HCaptcha
+                      sitekey={hCaptchaSiteKey}
+                      onVerify={handleHCaptchaVerify}
+                      onExpire={handleHCaptchaExpire}
+                      ref={hCaptchaRef}
+                    />
+                  </div>
+                )}
                 <Button
                   onClick={handleAnalyze}
-                  disabled={isSubmitting || !question.trim()}
+                  disabled={isSubmitting || !question.trim() || (isProduction && !hCaptchaToken)}
                   size="lg"
                   className={`
                     bg-[#c08b45]
@@ -473,7 +533,7 @@ export default function Reading() {
                     text-base sm:text-lg
                     shadow-[0_8px_25px_rgba(192,139,69,0.3)]
                     transition-all
-                    ${isSubmitting || !question.trim()
+                    ${isSubmitting || !question.trim() || !hCaptchaToken
                       ? "opacity-50 cursor-not-allowed"
                       : "hover:scale-[1.02] hover:shadow-[0_12px_35px_rgba(192,139,69,0.4)]"
                     }

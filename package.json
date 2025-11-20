@@ -23,6 +23,7 @@
     "@google/generative-ai": "^0.24.1",
     "@heroui/react": "^2.2.9",
     "@heroui/theme": "^2.2.9",
+    "@hcaptcha/react-hcaptcha": "^1.12.0",
     "framer-motion": "^12.23.24",
     "next": "^16.0.3",
     "react": "^19.2.0",

@@ -32,7 +32,7 @@ export default function Home() {
               </p>
               
               <Button
-                className="bg-white text-black hover:bg-gray-200 font-semibold text-base sm:text-lg rounded-none"
+                className="bg-white text-black hover:bg-gray-200 font-semibold text-base text-md rounded-none"
                 onClick={() => router.push('/reading')}
               >
                 <span className="nav-star mr-2">✦</span>

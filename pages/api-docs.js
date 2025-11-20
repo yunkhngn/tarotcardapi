@@ -24,41 +24,47 @@ export default function ApiDocs() {
             </p>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             <div className="bg-[#111010] border border-[#2a1f17] rounded-2xl p-6 sm:p-8 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-                <code className="bg-[#2a2a2a] px-4 py-2 rounded-lg border border-gray-700 text-[#D4AF37] font-mono text-sm sm:text-base whitespace-nowrap">
-                  GET /api/cards
-                </code>
-                <span className="text-white/80 text-sm sm:text-base">Get all cards</span>
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                  <code className="bg-[#2a2a2a] px-4 py-2.5 rounded-lg border border-[#D4AF37]/30 text-[#D4AF37] font-mono text-sm sm:text-base whitespace-nowrap w-fit">
+                    GET /api/cards
+                  </code>
+                  <span className="text-white/90 text-base sm:text-lg font-medium">Get all cards</span>
+                </div>
+                <p className="text-white/70 text-sm sm:text-base leading-relaxed">
+                  Trả về danh sách tất cả 78 lá bài Tarot với thông tin chi tiết.
+                </p>
               </div>
-              <p className="text-white/60 text-sm mt-3 ml-0 sm:ml-[200px]">
-                Trả về danh sách tất cả 78 lá bài Tarot với thông tin chi tiết.
-              </p>
             </div>
 
             <div className="bg-[#111010] border border-[#2a1f17] rounded-2xl p-6 sm:p-8 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-                <code className="bg-[#2a2a2a] px-4 py-2 rounded-lg border border-gray-700 text-[#D4AF37] font-mono text-sm sm:text-base whitespace-nowrap">
-                  GET /api/cards/onecard
-                </code>
-                <span className="text-white/80 text-sm sm:text-base">Get one random card</span>
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                  <code className="bg-[#2a2a2a] px-4 py-2.5 rounded-lg border border-[#D4AF37]/30 text-[#D4AF37] font-mono text-sm sm:text-base whitespace-nowrap w-fit">
+                    GET /api/cards/onecard
+                  </code>
+                  <span className="text-white/90 text-base sm:text-lg font-medium">Get one random card</span>
+                </div>
+                <p className="text-white/70 text-sm sm:text-base leading-relaxed">
+                  Trả về một lá bài Tarot ngẫu nhiên từ bộ bài 78 lá.
+                </p>
               </div>
-              <p className="text-white/60 text-sm mt-3 ml-0 sm:ml-[200px]">
-                Trả về một lá bài Tarot ngẫu nhiên từ bộ bài 78 lá.
-              </p>
             </div>
 
             <div className="bg-[#111010] border border-[#2a1f17] rounded-2xl p-6 sm:p-8 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
-                <code className="bg-[#2a2a2a] px-4 py-2 rounded-lg border border-gray-700 text-[#D4AF37] font-mono text-sm sm:text-base whitespace-nowrap">
-                  GET /api/cards/threecards
-                </code>
-                <span className="text-white/80 text-sm sm:text-base">Get three random cards</span>
+              <div className="flex flex-col gap-3">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                  <code className="bg-[#2a2a2a] px-4 py-2.5 rounded-lg border border-[#D4AF37]/30 text-[#D4AF37] font-mono text-sm sm:text-base whitespace-nowrap w-fit">
+                    GET /api/cards/threecards
+                  </code>
+                  <span className="text-white/90 text-base sm:text-lg font-medium">Get three random cards</span>
+                </div>
+                <p className="text-white/70 text-sm sm:text-base leading-relaxed">
+                  Trả về ba lá bài Tarot ngẫu nhiên, không trùng lặp, phù hợp cho trải bài 3 lá.
+                </p>
               </div>
-              <p className="text-white/60 text-sm mt-3 ml-0 sm:ml-[200px]">
-                Trả về ba lá bài Tarot ngẫu nhiên, không trùng lặp, phù hợp cho trải bài 3 lá.
-              </p>
             </div>
           </div>
 

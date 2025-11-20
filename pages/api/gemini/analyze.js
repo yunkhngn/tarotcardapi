@@ -27,7 +27,43 @@ export default async function handler(req, res) {
       });
     }
 
-    const { question, cards } = req.body;
+    const { question, cards, hCaptchaToken } = req.body;
+
+    // Verify hCaptcha only in production
+    const isProduction = process.env.NODE_ENV === 'production';
+    
+    if (isProduction) {
+      if (!hCaptchaToken) {
+        return res.status(400).json({ error: 'hCaptcha verification required' });
+      }
+
+      const hCaptchaSecret = process.env.HCAPTCHA_SECRET;
+      if (!hCaptchaSecret) {
+        return res.status(500).json({ error: 'hCaptcha secret not configured' });
+      }
+
+      try {
+        const verifyResponse = await fetch('https://hcaptcha.com/siteverify', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: `secret=${hCaptchaSecret}&response=${hCaptchaToken}`,
+        });
+
+        const verifyData = await verifyResponse.json();
+        
+        if (!verifyData.success) {
+          return res.status(400).json({ 
+            error: 'hCaptcha verification failed',
+            details: verifyData['error-codes'] || 'Invalid token'
+          });
+        }
+      } catch (error) {
+        console.error('hCaptcha verification error:', error);
+        return res.status(500).json({ error: 'Failed to verify hCaptcha' });
+      }
+    }
 
     if (!question || !cards || !Array.isArray(cards) || cards.length !== 3) {
       return res.status(400).json({ error: 'Invalid request. Question and 3 cards are required.' });
