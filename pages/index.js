@@ -102,7 +102,7 @@ export default function Home() {
               tarot.yunkhngn.dev mang đến trải nghiệm bói bài Tarot toàn diện với sự đa dạng về chủ đề, đáp ứng mọi khía cạnh trong cuộc sống. Từ tình yêu, sự nghiệp, tài chính, sức khỏe, đến các vấn đề về gia đình hay tinh thần cá nhân, mỗi trải bài đều được cá nhân hóa để giải đáp thắc mắc và định hướng chính xác nhất. Với đội ngũ chuyên gia giàu kinh nghiệm, tarot.yunkhngn.dev là nơi bạn có thể tìm thấy câu trả lời và sự cân bằng cho mọi giai đoạn của hành trình cuộc sống.
             </p>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 items-stretch">
               {[
                 {
                   cardName: 'The Lovers',
@@ -129,21 +129,21 @@ export default function Home() {
                   image: '/image/fortune.png'
                 }
               ].map((theme, index) => (
-                <div key={index} className="bg-[#111010] border-2 border-white/20 overflow-hidden flex flex-col h-full">
-                  <div className="relative w-full flex-1 border-b-2 border-white/20 bg-white flex items-center justify-center p-4 min-h-[300px]">
+                <div key={index} className="flex flex-col items-center text-center h-full">
+                  <div className="relative w-full max-w-[280px] aspect-[3/5] mb-6 bg-white border-2 border-dashed border-[#8b7355] rounded-lg flex items-center justify-center p-4 mx-auto">
                     <Image
                       src={theme.image}
                       alt={theme.cardName}
                       fill
                       className="object-contain"
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      sizes="280px"
                     />
                   </div>
-                  <div className="p-6 flex flex-col">
-                    <h3 className="text-xl font-serif text-[#D4AF37] mb-3">{theme.title}</h3>
-                    <p className="text-white/80 text-sm leading-relaxed mb-6">{theme.description}</p>
+                  <div className="flex flex-col flex-1 w-full max-w-sm mx-auto">
+                    <h3 className="text-xl font-serif text-[#D4AF37] mb-3 font-bold">{theme.title}</h3>
+                    <p className="text-white/80 text-sm leading-relaxed mb-6 flex-1">{theme.description}</p>
                     <Button
-                      className="bg-white text-black hover:bg-gray-200 font-semibold text-sm rounded-none border-2 border-black w-full"
+                      className="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-semibold text-sm rounded-none w-full mt-auto"
                       onClick={() => router.push('/reading')}
                     >
                       <span className="nav-star mr-2">✦</span>
