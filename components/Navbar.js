@@ -7,6 +7,7 @@ const navLinks = [
   { label: 'Bói bài tarot', href: '/reading', key: 'reading' },
   { label: 'Bài tarot', href: '/library', key: 'library' },
   { label: 'API Docs', href: '/api-docs', key: 'api-docs' },
+  { label: 'About', href: '/about', key: 'about' },
 ];
 
 export default function AppNavbar() {

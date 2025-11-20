@@ -5,6 +5,7 @@ export default function Footer() {
     { label: 'Bói bài tarot', href: '/reading' },
     { label: 'Bài tarot', href: '/library' },
     { label: 'API Docs', href: '/api-docs' },
+    { label: 'About', href: '/about' },
   ];
   const router = useRouter();
 
