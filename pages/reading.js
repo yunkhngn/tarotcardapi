@@ -5,6 +5,7 @@ import remarkGfm from 'remark-gfm';
 import Image from 'next/image';
 import AppNavbar from '../components/Navbar';
 import Metadata from '../components/Metadata';
+import Footer from '../components/Footer';
 
 const DISPLAY_CARD_COUNT = 12;
 
@@ -538,6 +539,7 @@ export default function Reading() {
         )}
       </div>
       </div>
+      <Footer/>
     </>
   );
 }

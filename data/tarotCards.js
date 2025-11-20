@@ -3,67 +3,70 @@ export const tarotCards = [
   {
     name: "The Fool",
     description:
-      "The card suggests that your investments have the potential to yield positive results. The Fool signifies new beginnings, taking risks, and embracing unconventional approaches. It encourages you to trust your instincts and explore new opportunities. However, it's important to exercise caution and avoid recklessness.\n\nThe Fool card indicates that success may come through a sense of adventure and learning from both positive and negative outcomes. Overall, the card implies that your investments have a promising outlook, but the ultimate result will depend on your willingness to embrace the journey and make informed decisions.",
+      "Lá bài này cho thấy các khoản đầu tư của bạn có tiềm năng mang lại kết quả tích cực. The Fool tượng trưng cho sự khởi đầu mới, sự liều lĩnh tích cực và tinh thần khám phá. Nó khuyến khích bạn tin vào trực giác, mở lòng với những cơ hội mới nhưng vẫn cần tránh hành động bốc đồng.\n\nThe Fool cho thấy thành công có thể đến từ việc dám thử, trải nghiệm và học hỏi từ cả thành công lẫn thất bại. Kết quả cuối cùng phụ thuộc vào khả năng đón nhận hành trình và đưa ra quyết định thông minh của bạn.",
     image: "/tarotdeck/thefool.jpeg",
   },
+  
   {
     name: "The Magician",
     description:
-      "The card suggests that your trades have the potential to yield successful results. The Magician represents power, skill, and manifestation of goals. It signifies that you have the necessary tools and abilities to make your investments profitable. This card encourages you to utilize your intellect, creativity, and resourcefulness to your advantage.\n\nBy harnessing your potential and making strategic decisions, you can manifest positive outcomes in your crypto trades. However, it's important to remember that the ultimate result will depend on your actions, choices, and market conditions. The Magician card indicates that you have the ability to influence and shape the outcome of your trades through your knowledge and skills.",
+      "The Magician cho thấy bạn có đầy đủ kỹ năng, nguồn lực và sự sáng tạo để khiến các khoản đầu tư hoặc dự định của mình trở nên thành công. Lá bài tượng trưng cho sự tập trung, tư duy chiến lược và khả năng biến ý tưởng thành hiện thực.\n\nNó khuyến khích bạn sử dụng kiến thức, sự linh hoạt và chủ động để tạo ra kết quả tích cực. Tuy nhiên, thành công vẫn phụ thuộc vào cách bạn áp dụng kỹ năng và phản ứng với thị trường.",
     image: "/tarotdeck/themagician.jpeg",
   },
+  
   {
     name: "The High Priestess",
     description:
-      "According to The High Priestess tarot card, your trades have the potential to yield mysterious and intuitive results. Trust your instincts, tap into hidden knowledge, and explore alternative perspectives to make informed decisions. The card suggests that unseen factors may influence your investments, and embracing your intuition can lead to profitable outcomes.\n\nHowever, remember that the High Priestess card doesn't guarantee specific results; success depends on your ability to navigate the market's mysteries using a blend of rational analysis and intuitive insights.",
+      "The High Priestess cho thấy các quyết định hiện tại cần dựa vào trực giác, sự quan sát sâu sắc và việc lắng nghe những điều chưa được nói ra. Lá bài gợi ý rằng có những yếu tố ẩn mà bạn chưa nhìn thấy hết.\n\nNó khuyến khích bạn kiên nhẫn, lùi lại để nhìn rõ bản chất vấn đề và tin vào cảm nhận của chính mình.",
     image: "/tarotdeck/thehighpriestess.jpeg",
   },
+  
   {
     name: "The Empress",
     description:
-      "According to The Empress tarot card, your trades have the potential to yield abundant and fruitful results. The Empress represents growth, nurturing, and prosperity. This card suggests that your investments may bring about positive outcomes and financial abundance. \n\nTo maximize your chances of success, it advises you to adopt a nurturing mindset and approach your trades with patience and care. Trust your in stincts and tap into your creativity when making decisions in the crypto market. By finding a harmonious balance between intuition and practicality, you can create favorable conditions for your investments to flourish.\n\nHowever, it's important to note that the Empress card does not guarantee specific outcomes. The actual results will depend on your actions, strategies, and the overall market conditions. Nevertheless, by embracing a nurturing mindset and making informed choices, you increase the likelihood of achieving prosperous results in your trading endeavors.",
+      "The Empress tượng trưng cho sự phát triển, nuôi dưỡng và thịnh vượng. Lá bài báo hiệu rằng những nỗ lực của bạn có thể mang đến kết quả dồi dào và phong phú.\n\nNó khuyến khích bạn chăm chút, kiên nhẫn và tạo môi trường tốt để ý tưởng hoặc khoản đầu tư phát triển. Dù vậy, kết quả cuối cùng vẫn phụ thuộc vào hành động và chiến lược thực tế của bạn.",
     image: "/tarotdeck/theempress.jpeg",
   },
+  
   {
     name: "The Emperor",
     description:
-      "The Emperor tarot card represents authority, structure, and stability. It symbolizes a time of taking control and establishing a solid foundation for your trades. This card suggests that your investments have the potential to yield positive results through a disciplined and structured approach. It encourages you to exercise leadership and make well-informed decisions based on careful analysis and strategic planning.\n\nBy setting clear boundaries and maintaining a sense of control, you can create a stable framework for success in your trades. However, it is important to remain adaptable to market conditions and make adjustments as necessary to ensure continued growth and prosperity.",
+      "The Emperor đại diện cho cấu trúc, kỷ luật và tư duy lãnh đạo. Lá bài cho thấy bạn cần cách tiếp cận có hệ thống, rõ ràng và kiên định.\n\nNó báo hiệu khả năng đạt kết quả tích cực nếu bạn kiểm soát tốt tình huống, lập kế hoạch chiến lược và ra quyết định dựa trên logic.",
     image: "/tarotdeck/theemperor.jpeg",
   },
+  
   {
     name: "The Hierophant",
     description:
-      "According to The Hierophant tarot card, your trades have the potential to yield structured and traditional results. The Hierophant represents conformity, tradition, and established systems. This card suggests that your investments may benefit from following established guidelines and adopting a conservative approach.\n\nTo increase the likelihood of success, it advises seeking guidance from experienced individuals or experts in the crypto market. The Hierophant encourages adhering to established strategies, rules, and regulations when making trading decisions. By aligning yourself with trusted sources of knowledge and respecting traditional trading methods, you can navigate the market more effectively.\n\n However, it's important to note that the Hierophant card does not guarantee specific outcomes. The actual results will depend on your ability to apply traditional principles while considering market dynamics and adapting when necessary. By maintaining a balance between tradition and flexibility, seeking expert advice, and making informed decisions, you can enhance the potential for successful results in your trades.",
+      "The Hierophant liên quan đến sự truyền thống, ổn định và những nguyên tắc đã được chứng minh. Lá bài cho thấy bạn có thể đạt kết quả tốt nếu làm theo quy tắc, học hỏi từ người có kinh nghiệm và áp dụng những phương pháp đáng tin cậy.\n\nNó khuyên bạn giữ tư duy kỷ luật và không nên quá mạo hiểm vào lúc này.",
     image: "/tarotdeck/thehierophant.jpeg",
   },
+  
   {
     name: "The Lovers",
     description:
-      "According to 'The Lovers' tarot card, your trades have the potential to yield harmonious and positive results. The Lovers represent partnership, alignment, and choices based on personal values. This card suggests that your investments may thrive when you make decisions that resonate with your beliefs and values. It encourages you to consider both financial and emotional aspects of your trades, seek harmony, and make choices that align with your true desires.\n\nCollaboration and finding common ground with others in the crypto market may contribute to favorable outcomes. Trust your instincts, stay true to yourself, and make informed decisions to increase the likelihood of achieving positive results. However, it's important to note that the Lovers card does not guarantee specific outcomes. The actual results will depend on your ability to make decisions in alignment with your values and navigate the market with integrity.",
+      "The Lovers tượng trưng cho sự hòa hợp và những lựa chọn dựa trên giá trị cá nhân. Lá bài cho thấy các quyết định của bạn nên dựa vào điều thật sự phù hợp với trái tim và niềm tin của mình.\n\nKhi tâm – trí – hành động đồng nhất, bạn sẽ đạt kết quả tốt hơn.",
     image: "/tarotdeck/TheLovers.jpg",
   },
+  
   {
     name: "The Chariot",
     description:
-      "According to 'The Chariot' tarot card, your trades have the potential to yield victory and success. The Chariot represents determination, willpower, and assertiveness. It suggests that through focused and disciplined efforts, you can overcome challenges and obstacles in the crypto market. By setting clear goals, devising strategic plans, and executing them confidently, you increase your chances of achieving triumphant outcomes.\n\nHowever, it's important to note that the Chariot card does not guarantee specific results. Your ultimate success will depend on your ability to maintain focus, adapt to changing circumstances, and make informed decisions. Approach your trades with determination, discipline, and adaptability to enhance the potential for positive results.",
+      "The Chariot đại diện cho ý chí mạnh mẽ, sự quyết tâm và khả năng vượt qua thử thách. Lá bài báo hiệu rằng bạn có thể đạt chiến thắng nếu giữ tập trung, kỷ luật và tiến lên với sự tự tin.\n\nNó nhấn mạnh rằng thành công đến từ việc kiểm soát cảm xúc và lái tình huống theo đúng hướng.",
     image: "/tarotdeck/thechariot.jpeg",
   },
+  
   {
     name: "Strength",
     description:
-      "According to 'Strength' tarot card, your trades have the potential to yield strength and resilience. The Strength card represents courage, inner power, and the ability to overcome challenges. It suggests that by harnessing your inner strength and staying focused, you can navigate the crypto market with confidence and determination. This card advises you to trust your abilities, remain calm in turbulent times, and persistently pursue your investment goals.\n\nHowever, it's important to remember that the Strength card does not guarantee specific outcomes. Your ultimate success will depend on your ability to stay strong, make informed decisions, and adapt to market conditions. Approach your trades with confidence, trust in your abilities, and remain resilient to enhance the potential for positive results.",
+      "Strength tượng trưng cho lòng can đảm, sự kiên nhẫn và sức mạnh nội tại. Lá bài báo hiệu rằng bạn có thể vượt qua khó khăn bằng sự bình tĩnh và kiểm soát cảm xúc.\n\nNó khuyến khích bạn tin vào bản thân, kiên trì và tiếp tục tiến lên ngay cả khi mọi thứ trở nên khó khăn.",
     image: "/tarotdeck/thestrength.jpeg",
   },
-  {
-    name: "The Hermit",
-    description:
-      "According to 'The Hermit' tarot card, your trades may yield introspection and solitude. The Hermit represents wisdom, self-reflection, and seeking inner guidance. This card suggests that your investments may benefit from taking a step back, reflecting on your strategies, and seeking a deeper understanding of the crypto market.\n\nIt advises prioritizing self-analysis and introspection in your trading decisions. The Hermit encourages you to seek solitude to refine your strategies and make well-informed choices. By trusting your inner wisdom and taking a cautious approach, you can navigate the market more effectively.\n\nHowever, it's important to note that the Hermit card does not guarantee specific results. The actual outcomes will depend on your ability to embrace introspection, integrate your learnings, and make informed decisions. Approach your trades with wisdom, take time for reflection, and make thoughtful choices to increase the likelihood of favorable results.",
-    image: "/tarotdeck/thehermit.jpeg",
-  },
+  
   {
     name: "Wheel of Fortune",
     description:
-      "According to 'Wheel of Fortune' tarot card, your trades may yield unpredictable results. The Wheel of Fortune represents cycles and changes in life, indicating that your investments may be subject to the ups and downs of the crypto market. This card advises you to embrace both opportunities and challenges that come your way, as luck and circumstances play a role in your trading outcomes. It suggests being adaptable and open to new possibilities.\n\nKeep in mind that external factors can influence your trades, so staying informed and making flexible decisions is crucial. However, it's important to note that the Wheel of Fortune card does not guarantee specific results. The actual outcomes will depend on various factors and your ability to navigate the changes effectively.",
+      "Wheel of Fortune tượng trưng cho sự thay đổi, chu kỳ và yếu tố may mắn. Lá bài cho thấy tình huống của bạn có thể biến chuyển bất ngờ — cả theo hướng tốt lẫn xấu.\n\nNó khuyến khích bạn linh hoạt, nắm bắt cơ hội và chấp nhận rằng không điều gì đứng yên mãi mãi. Tác động bên ngoài cũng đóng vai trò quan trọng trong kết quả.",
     image: "/tarotdeck/wheeloffortune.jpeg",
   },
   {

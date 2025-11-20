@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
-import { Card, CardBody, Input, Spinner, Button } from '@heroui/react';
+import { Input, Spinner, Button } from '@heroui/react';
+import Image from 'next/image';
 import AppNavbar from '../components/Navbar';
 import Metadata from '../components/Metadata';
+import Footer from '../components/Footer';
 
 export default function Library() {
   const [cards, setCards] = useState([]);
@@ -9,7 +11,7 @@ export default function Library() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCard, setSelectedCard] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const CARDS_PER_PAGE = 12;
+  const CARDS_PER_PAGE = 24;
 
   useEffect(() => {
     fetch('/api/cards')
@@ -107,25 +109,26 @@ export default function Library() {
               Tìm thấy {filteredCards.length} lá bài
             </p>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 sm:gap-4 md:gap-5">
               {paginatedCards.map((card, index) => (
                 <div
                   key={`${card.name}-${index}`}
-                  className="bg-[#2a2a2a] border border-gray-700 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 hover:border-[#D4AF37]/50 hover:shadow-2xl"
+                  className="group relative cursor-pointer transition-all duration-300 hover:scale-105"
                   onClick={() => setSelectedCard(card)}
                 >
-                  <div className="relative">
-                    <img
+                  <div className="relative overflow-hidden rounded-lg border border-gray-700/50 group-hover:border-[#D4AF37]/70 transition-all shadow-lg group-hover:shadow-2xl" style={{ aspectRatio: '3 / 5' }}>
+                    <Image
                       src={card.image}
                       alt={card.name}
-                      className="w-full h-80 object-cover"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 20vw, 16vw"
                     />
-                  </div>
-                  <div className="p-4">
-                    <h3 className="text-lg font-bold text-[#D4AF37] mb-2">{card.name}</h3>
-                    <p className="text-white/70 text-sm line-clamp-3">
-                      {card.description.substring(0, 100)}...
-                    </p>
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/70 transition-all duration-300 flex items-center justify-center">
+                      <h3 className="text-white text-sm sm:text-base font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 text-center px-2">
+                        {card.name}
+                      </h3>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -203,33 +206,35 @@ export default function Library() {
             onClick={() => setSelectedCard(null)}
           >
             <div 
-              className="relative bg-[#1b1918] border border-[#453628] rounded-[32px] shadow-[0_35px_120px_rgba(0,0,0,0.7)] max-w-3xl w-full max-h-[95vh] overflow-y-auto"
+              className="relative bg-[#1b1918] border border-[#453628] rounded-[32px] shadow-[0_35px_120px_rgba(0,0,0,0.7)] max-w-3xl w-full h-[95vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="absolute top-4 left-6">
+              <div className="absolute top-4 left-6 z-10">
                 <span className="text-xs uppercase tracking-[0.35em] text-[#c08b45] bg-white/10 px-3 py-1 rounded-full">
                   {selectedCard.name}
                 </span>
               </div>
               <button
                 onClick={() => setSelectedCard(null)}
-                className="absolute top-4 right-6 text-white/70 hover:text-white text-3xl leading-none"
+                className="absolute top-4 right-6 z-10 text-white/70 hover:text-white text-3xl leading-none"
               >
                 ×
               </button>
               
-              <div className="p-8">
-                <h2 className="text-4xl font-serif text-[#c8a05e] mb-6 mt-8">
+              <div className="flex-1 overflow-y-auto p-8 pt-16">
+                <h2 className="text-4xl font-serif text-[#c8a05e] mb-6">
                   {selectedCard.name}
                 </h2>
-                <div className="relative w-full rounded-2xl overflow-hidden border border-[#2f2620] shadow-[0_25px_70px_rgba(0,0,0,0.45)] mb-6 bg-[#0f0e0d] flex justify-center">
-                  <img
+                <div className="relative w-full rounded-2xl overflow-hidden border border-[#2f2620] shadow-[0_25px_70px_rgba(0,0,0,0.45)] mb-6 bg-[#0f0e0d] flex justify-center" style={{ aspectRatio: '3 / 5', maxWidth: '400px', margin: '0 auto' }}>
+                  <Image
                     src={selectedCard.image}
                     alt={selectedCard.name}
-                    className="w-full max-w-md h-auto object-contain"
+                    fill
+                    className="object-contain"
+                    sizes="400px"
                   />
                 </div>
-                <div className="text-white/90 leading-relaxed whitespace-pre-line break-words text-lg font-light space-y-6">
+                <div className="text-white/90 leading-relaxed whitespace-pre-line break-words text-lg font-light pb-4">
                   {selectedCard.description}
                 </div>
               </div>
@@ -238,6 +243,7 @@ export default function Library() {
         )}
       </div>
       </div>
+      <Footer />
     </>
   );
 }
