@@ -51,15 +51,6 @@ export default function Home() {
               </div>
             </div>
           </div>
-
-          <div className="mt-12 sm:mt-16 pt-8 border-t border-gray-800">
-            <h2 className="text-xl sm:text-2xl font-serif text-[#D4AF37] mb-4 text-center sm:text-left">API Endpoints</h2>
-            <div className="space-y-3 text-white/70 text-sm sm:text-base">
-              <p><code className="bg-[#2a2a2a] px-3 py-1 rounded border border-gray-700 block sm:inline-block">GET /api/cards</code> <span className="sm:ml-2">- Get all cards</span></p>
-              <p><code className="bg-[#2a2a2a] px-3 py-1 rounded border border-gray-700 block sm:inline-block">GET /api/cards/onecard</code> <span className="sm:ml-2">- Get one random card</span></p>
-              <p><code className="bg-[#2a2a2a] px-3 py-1 rounded border border-gray-700 block sm:inline-block">GET /api/cards/threecards</code> <span className="sm:ml-2">- Get three random cards</span></p>
-            </div>
-          </div>
         </div>
       </div>
     </>
