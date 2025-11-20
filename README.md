@@ -241,10 +241,54 @@ Analyzes three selected Tarot cards using Google Gemini AI based on a user's que
 - Development: Unlimited
 
 **Error Responses:**
-- `429 Too Many Requests`: Rate limit exceeded
+
 - `400 Bad Request`: Invalid request or missing hCaptcha token (production)
+  ```json
+  {
+    "error": "Invalid request. Question and 3 cards are required."
+  }
+  ```
+
+- `429 Too Many Requests`: Rate limit exceeded (application-level)
+  ```json
+  {
+    "error": "Rate limit exceeded",
+    "message": "Please wait X minutes Y seconds before trying again",
+    "remainingTime": 300000,
+    "remainingMinutes": 5,
+    "remainingSeconds": 0
+  }
+  ```
+
 - `500 Internal Server Error`: Server error or Gemini API error
-- `503 Service Unavailable`: Gemini API is overloaded
+  ```json
+  {
+    "error": "Failed to generate analysis",
+    "details": "Error message here",
+    "type": "Error"
+  }
+  ```
+
+- `503 Service Unavailable`: Gemini API quota exceeded or service unavailable
+  ```json
+  {
+    "error": "Service temporarily unavailable",
+    "message": "The AI service has reached its quota limit. Please try again later.",
+    "details": "Quota exceeded for Gemini API",
+    "type": "QuotaExceeded",
+    "retryAfter": 3600
+  }
+  ```
+  
+  Or for general service unavailability:
+  ```json
+  {
+    "error": "Service temporarily unavailable",
+    "message": "The AI service is currently unavailable. Please try again later.",
+    "details": "Service unavailable",
+    "type": "ServiceUnavailable"
+  }
+  ```
 
 ### hCaptcha Endpoint
 

@@ -135,8 +135,47 @@ Hãy viết ngắn gọn, súc tích, có xuống dòng ở các đầu mục, s
     console.error('Gemini API error:', error);
     console.error('Error stack:', error.stack);
     
-    // Extract more detailed error information
-    let errorMessage = 'Failed to generate analysis';
+    // Check for quota/resource exhaustion errors
+    const errorMessage = error.message || '';
+    const errorString = errorMessage.toLowerCase();
+    const errorCode = error.code || error.status || '';
+    
+    // Check for quota exceeded errors
+    if (
+      errorString.includes('quota') ||
+      errorString.includes('resource exhausted') ||
+      errorString.includes('rate limit') ||
+      errorString.includes('quota exceeded') ||
+      errorCode === 429 ||
+      errorCode === 'RESOURCE_EXHAUSTED' ||
+      errorCode === 8 // gRPC code for RESOURCE_EXHAUSTED
+    ) {
+      return res.status(503).json({ 
+        error: 'Service temporarily unavailable',
+        message: 'The AI service has reached its quota limit. Please try again later.',
+        details: 'Quota exceeded for Gemini API',
+        type: 'QuotaExceeded',
+        retryAfter: 3600 // Suggest retry after 1 hour
+      });
+    }
+    
+    // Check for service unavailable errors
+    if (
+      errorString.includes('service unavailable') ||
+      errorString.includes('unavailable') ||
+      errorCode === 503 ||
+      errorCode === 'UNAVAILABLE'
+    ) {
+      return res.status(503).json({ 
+        error: 'Service temporarily unavailable',
+        message: 'The AI service is currently unavailable. Please try again later.',
+        details: errorMessage,
+        type: 'ServiceUnavailable'
+      });
+    }
+    
+    // Extract more detailed error information for other errors
+    let errorMessageFinal = 'Failed to generate analysis';
     let errorDetails = error.message || 'Unknown error';
     
     if (error.message) {
@@ -147,7 +186,7 @@ Hãy viết ngắn gọn, súc tích, có xuống dòng ở các đầu mục, s
     }
     
     return res.status(500).json({ 
-      error: errorMessage, 
+      error: errorMessageFinal, 
       details: errorDetails,
       type: error.name || 'Error'
     });

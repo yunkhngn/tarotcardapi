@@ -46,7 +46,7 @@ export default function Reading() {
   const hCaptchaRef = useRef(null);
   const cooldownIntervalRef = useRef(null);
   const isProduction = process.env.NODE_ENV === 'production';
-  const COOLDOWN_DURATION = 5 * 60 * 1000; // 5 minutes in milliseconds
+  const COOLDOWN_DURATION = 15 * 60 * 1000; // 5 minutes in milliseconds
 
   useEffect(() => {
     const fetchCards = async () => {
