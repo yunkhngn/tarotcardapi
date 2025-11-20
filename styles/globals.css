@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 :root {
   --heroui-background: 0 0% 4%;
@@ -31,6 +29,16 @@ a {
   font-family: var(--font-mulish), 'Mulish', sans-serif;
 }
 
+input:focus,
+input:focus-visible,
+textarea:focus,
+textarea:focus-visible,
+button:focus,
+button:focus-visible {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 .navbar-link {
   letter-spacing: 0.08em;
   font-weight: 600;
@@ -52,6 +60,25 @@ a {
 
 .navbar-link:hover {
   color: #ffffff;
+}
+
+.markdown-content ul {
+  list-style: disc;
+  margin-left: 1.5rem;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+button:focus,
+[role="button"]:focus {
+  outline: none;
+  box-shadow: none;
+}
+
+.heroui-input-wrapper:focus-within,
+.heroui-textarea-wrapper:focus-within {
+  box-shadow: none !important;
 }
 
 .markdown-content ul {

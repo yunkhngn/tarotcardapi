@@ -50,15 +50,15 @@ export default function Library() {
         description="Khám phá tất cả 78 lá bài Tarot và ý nghĩa chi tiết của chúng. Tìm hiểu về Major Arcana và Minor Arcana."
         image="/tarot.jpeg"
       />
-      <div className="min-h-screen bg-[#1a1a1a]">
+      <div className="min-h-screen bg-[#1a1a1a] flex flex-col">
         <AppNavbar />
       
-      <div className="container mx-auto px-4 py-8 max-w-7xl">
-        <div className="bg-[#2a2a2a] border border-gray-700 rounded-lg p-6 mb-8">
-          <h1 className="text-4xl font-serif text-[#D4AF37] mb-4 text-center">
+      <div className="container mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 sm:py-12 max-w-7xl flex-1">
+        <div className="bg-[#2a2a2a] border border-gray-700 rounded-2xl p-6 sm:p-8 mb-8">
+          <h1 className="text-3xl sm:text-4xl font-serif text-[#D4AF37] mb-4 text-center">
             Library Bài Tarot
           </h1>
-          <p className="text-white/80 mb-6 text-center text-lg">
+          <p className="text-white/80 mb-6 text-center text-base sm:text-lg">
             Khám phá tất cả 78 lá bài Tarot và ý nghĩa của chúng
           </p>
           
@@ -66,10 +66,10 @@ export default function Library() {
             placeholder="Tìm kiếm bài..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="max-w-md mx-auto"
+            className="w-full max-w-2xl mx-auto"
             classNames={{
-              input: "text-white placeholder:text-gray-500",
-              inputWrapper: "bg-[#1a1a1a] border-gray-700 hover:border-[#D4AF37]/50 focus-within:border-[#D4AF37]"
+              input: "text-white placeholder:text-gray-400 text-base sm:text-lg",
+              inputWrapper: "bg-[#1a1a1a] border border-gray-700 hover:border-[#D4AF37]/50 focus-within:border-[#D4AF37] px-4 py-2"
             }}
           />
         </div>
@@ -80,11 +80,11 @@ export default function Library() {
           </div>
         ) : (
           <>
-            <p className="text-white/70 mb-6 text-center">
+            <p className="text-white/70 mb-6 text-center text-sm sm:text-base">
               Tìm thấy {filteredCards.length} lá bài
             </p>
             
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 sm:gap-6">
               {paginatedCards.map((card, index) => (
                 <div
                   key={`${card.name}-${index}`}
