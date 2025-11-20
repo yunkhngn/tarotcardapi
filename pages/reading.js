@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { 
   Card, 
   CardBody, 
-  Input, 
+  Textarea, 
   Button, 
   Spinner
 } from '@heroui/react';
@@ -117,38 +117,59 @@ export default function Reading() {
             <p className="text-center text-xs md:text-sm tracking-[0.5em] text-[#c08b45] uppercase mb-4">
               ĐẶT CÂU HỎI
             </p>
-            <h1 className="text-3xl md:text-4xl font-serif text-[#f5f0e5] text-center mb-8">
-              Đặt câu hỏi cho trải bài Tarot
+            <h1 className="text-3xl md:text-5xl font-serif text-[#f5f0e5] text-center mb-8 ">
+              ĐẶT CÂU HỎI CHO <br/>
+              TRẢI BÀI TAROT
             </h1>
 
-            <div className="flex gap-3 mb-8 items-stretch">
-              <Input
+            <div className="mb-8">
+              <div className="relative w-full">
+              <Textarea
                 placeholder="Khi nào tôi sẽ gặp được tình yêu mới?"
                 value={question}
                 onChange={(e) => setQuestion(e.target.value)}
-                className="flex-1"
+                minRows={1}
+                maxRows={4}
                 classNames={{
-                  input: "text-white placeholder:text-gray-500 text-lg",
-                  inputWrapper:
-                    " bg-[#2c2b2d] border border-transparent hover:border-transparent focus-within:border-transparent px-6 py-5 shadow-[0_15px_45px_rgba(0,0,0,0.45)]",
+                  input: "text-white placeholder:text-[#5f5f60] text-base pr-16",
+                  innerWrapper: "px-6 py-4",
+                  inputWrapper: `
+                    bg-[#262626]
+                    rounded-[28px]
+                    border border-[#3a3a3c]
+                    hover:border-[#4a4a4c]
+                    focus-within:border-[#4a4a4c]
+                    shadow-[0_15px_45px_rgba(0,0,0,0.45)]
+                    transition-all
+                  `,
                 }}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter' && question.trim() && !loading) {
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey && question.trim() && !loading) {
+                    e.preventDefault();
                     handleReading();
                   }
                 }}
               />
-              <button
-                onClick={handleReading}
-                disabled={loading || !question.trim()}
-                className={`rounded-full w-14 h-14 flex items-center justify-center shadow-[0_15px_45px_rgba(0,0,0,0.45)] transition-transform ${
-                  loading || !question.trim()
-                    ? 'bg-[#3a3a3c] cursor-not-allowed opacity-70'
-                    : 'bg-[#3a3a3c] hover:scale-[1.05]'
-                }`}
-              >
-                <span className="text-white text-xl">↑</span>
-              </button>
+                <button
+                  onClick={handleReading}
+                  disabled={loading || !question.trim()}
+                  className={`
+                    absolute top-1/2 right-3 -translate-y-1/2
+                    w-10 h-10
+                    flex items-center justify-center
+                    rounded-full
+                    bg-[#353535]
+                    shadow-[0_8px_20px_rgba(0,0,0,0.45)]
+                    transition-all
+                    ${loading || !question.trim()
+                      ? "opacity-50 cursor-not-allowed"
+                      : "hover:scale-[1.07]"
+                    }
+                  `}
+                >
+                  <span className="text-white text-base">↑</span>
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
@@ -258,4 +279,3 @@ export default function Reading() {
     </>
   );
 }
-

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Card, CardBody, Input, Spinner } from '@heroui/react';
+import { Card, CardBody, Input, Spinner, Button } from '@heroui/react';
 import AppNavbar from '../components/Navbar';
 import Metadata from '../components/Metadata';
 
@@ -8,6 +8,8 @@ export default function Library() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCard, setSelectedCard] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const CARDS_PER_PAGE = 12;
 
   useEffect(() => {
     fetch('/api/cards')
@@ -25,6 +27,21 @@ export default function Library() {
   const filteredCards = cards.filter(card =>
     card.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredCards.length / CARDS_PER_PAGE));
+  const startIndex = (currentPage - 1) * CARDS_PER_PAGE;
+  const paginatedCards = filteredCards.slice(startIndex, startIndex + CARDS_PER_PAGE);
+
+  const handlePageChange = (newPage) => {
+    if (newPage >= 1 && newPage <= totalPages) {
+      setCurrentPage(newPage);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   return (
     <>
@@ -68,9 +85,9 @@ export default function Library() {
             </p>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredCards.map((card, index) => (
+              {paginatedCards.map((card, index) => (
                 <div
-                  key={index}
+                  key={`${card.name}-${index}`}
                   className="bg-[#2a2a2a] border border-gray-700 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 hover:border-[#D4AF37]/50 hover:shadow-2xl"
                   onClick={() => setSelectedCard(card)}
                 >
@@ -90,6 +107,69 @@ export default function Library() {
                 </div>
               ))}
             </div>
+
+            {filteredCards.length > CARDS_PER_PAGE && (
+              <div className="mt-10 flex flex-col items-center gap-4">
+                <div className="text-white/70">
+                  Trang {currentPage} / {totalPages}
+                </div>
+                <div className="flex items-center gap-3">
+                  <Button
+                    disabled={currentPage === 1}
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    className="bg-[#1b1b1d] text-white border border-[#2f2f32] hover:border-[#c08b45]/60"
+                    size="sm"
+                    radius="full"
+                  >
+                    Trước
+                  </Button>
+                  {[...Array(totalPages)].map((_, idx) => {
+                    const pageNumber = idx + 1;
+                    const isActive = pageNumber === currentPage;
+                    // Only show first, last, current +/-1
+                    if (
+                      pageNumber === 1 ||
+                      pageNumber === totalPages ||
+                      Math.abs(pageNumber - currentPage) <= 1
+                    ) {
+                      return (
+                        <button
+                          key={pageNumber}
+                          onClick={() => handlePageChange(pageNumber)}
+                          className={`w-10 h-10 rounded-full border ${
+                            isActive
+                              ? 'bg-[#c08b45] border-[#c08b45] text-black font-semibold'
+                              : 'bg-[#1b1b1d] border-[#2f2f32] text-white hover:border-[#c08b45]/60'
+                          }`}
+                        >
+                          {pageNumber}
+                        </button>
+                      );
+                    }
+                    if (
+                      pageNumber === currentPage - 2 ||
+                      pageNumber === currentPage + 2
+                    ) {
+                      return (
+                        <span key={`ellipsis-${pageNumber}`} className="text-white/50 px-2">
+                          ...
+                        </span>
+                      );
+                    }
+                    return null;
+                  })}
+                  <Button
+                    disabled={currentPage === totalPages}
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    className="bg-[#1b1b1d] text-white border border-[#2f2f32] hover:border-[#c08b45]/60"
+                    size="sm"
+                    radius="full"
+                  >
+                    Sau
+                  </Button>
+                </div>
+              </div>
+            )}
           </>
         )}
 
@@ -119,14 +199,14 @@ export default function Library() {
                 <h2 className="text-4xl font-serif text-[#c8a05e] mb-6 mt-8">
                   {selectedCard.name}
                 </h2>
-                <div className="relative w-full rounded-2xl overflow-hidden border border-[#2f2620] shadow-[0_25px_70px_rgba(0,0,0,0.45)] mb-6">
+                <div className="relative w-full rounded-2xl overflow-hidden border border-[#2f2620] shadow-[0_25px_70px_rgba(0,0,0,0.45)] mb-6 bg-[#0f0e0d] flex justify-center">
                   <img
                     src={selectedCard.image}
                     alt={selectedCard.name}
-                    className="w-full h-[420px] object-cover"
+                    className="w-full max-w-md h-auto object-contain"
                   />
                 </div>
-                <div className="text-white/90 leading-relaxed whitespace-pre-line text-lg font-light space-y-6">
+                <div className="text-white/90 leading-relaxed whitespace-pre-line break-words text-lg font-light space-y-6">
                   {selectedCard.description}
                 </div>
               </div>

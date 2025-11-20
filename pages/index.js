@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Button } from '@heroui/react';
 import AppNavbar from '../components/Navbar';
 import Metadata from '../components/Metadata';
+import Footer from '../components/Footer';
 
 export default function Home() {
   const router = useRouter();
@@ -67,6 +68,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
     </>
   );
