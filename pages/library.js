@@ -96,29 +96,37 @@ export default function Library() {
         {/* Modal for selected card */}
         {selectedCard && (
           <div 
-            className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+            className="fixed inset-0 bg-black/85 backdrop-blur-sm flex items-center justify-center z-50 p-4 md:p-6"
             onClick={() => setSelectedCard(null)}
           >
             <div 
-              className="bg-[#2a2a2a] border border-gray-700 rounded-lg shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+              className="relative bg-[#1b1918] border border-[#453628] rounded-[32px] shadow-[0_35px_120px_rgba(0,0,0,0.7)] max-w-3xl w-full max-h-[95vh] overflow-y-auto"
               onClick={(e) => e.stopPropagation()}
             >
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-4">
-                  <h2 className="text-3xl font-serif text-[#D4AF37]">{selectedCard.name}</h2>
-                  <button
-                    onClick={() => setSelectedCard(null)}
-                    className="text-white/80 hover:text-white text-3xl leading-none"
-                  >
-                    ×
-                  </button>
+              <div className="absolute top-4 left-6">
+                <span className="text-xs uppercase tracking-[0.35em] text-[#c08b45] bg-white/10 px-3 py-1 rounded-full">
+                  {selectedCard.name}
+                </span>
+              </div>
+              <button
+                onClick={() => setSelectedCard(null)}
+                className="absolute top-4 right-6 text-white/70 hover:text-white text-3xl leading-none"
+              >
+                ×
+              </button>
+              
+              <div className="p-8">
+                <h2 className="text-4xl font-serif text-[#c8a05e] mb-6 mt-8">
+                  {selectedCard.name}
+                </h2>
+                <div className="relative w-full rounded-2xl overflow-hidden border border-[#2f2620] shadow-[0_25px_70px_rgba(0,0,0,0.45)] mb-6">
+                  <img
+                    src={selectedCard.image}
+                    alt={selectedCard.name}
+                    className="w-full h-[420px] object-cover"
+                  />
                 </div>
-                <img
-                  src={selectedCard.image}
-                  alt={selectedCard.name}
-                  className="w-full h-96 object-cover rounded-lg mb-4 border border-gray-700"
-                />
-                <div className="text-white/90 leading-relaxed whitespace-pre-line text-lg">
+                <div className="text-white/90 leading-relaxed whitespace-pre-line text-lg font-light space-y-6">
                   {selectedCard.description}
                 </div>
               </div>

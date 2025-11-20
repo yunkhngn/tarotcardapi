@@ -2,39 +2,56 @@ import { Navbar, NavbarBrand, NavbarContent, NavbarItem, Link as HeroUILink } fr
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
+const navLinks = [
+  { label: 'Bói bài tarot', href: '/reading', key: 'reading' },
+  { label: 'Bài tarot', href: '/library', key: 'library' },
+];
+
 export default function AppNavbar() {
   const router = useRouter();
 
   return (
     <Navbar 
-      className="bg-[#1a1a1a] border-b border-gray-800"
+      className="bg-[#0b0a0a] border-b border-[#2a1f17] px-6"
       maxWidth="full"
-      isBordered
     >
       <NavbarBrand>
-        <Link href="/" className="font-bold text-white text-xl hover:opacity-80 transition-opacity">
-          TAROT READER
+        <Link 
+          href="/" 
+          className="font-playfair text-white text-2xl tracking-[0.2em] flex items-center gap-2 hover:opacity-80 transition-opacity"
+        >
+          <span>TAROT READER</span>
+          <span className="text-[#d5a052] text-lg">✦</span>
         </Link>
       </NavbarBrand>
-      <NavbarContent className="hidden sm:flex gap-6" justify="center">
-        <NavbarItem isActive={router.pathname === '/reading'}>
-          <HeroUILink 
-            as={Link}
-            href="/reading"
-            className={router.pathname === '/reading' ? 'text-white font-semibold' : 'text-white/70 hover:text-white'}
+      <NavbarContent className="hidden lg:flex gap-6" justify="center">
+        {navLinks.map((link) => (
+          <NavbarItem 
+            key={link.key}
+            isActive={router.pathname === link.href}
+            className="font-mulish"
           >
-            BÓI BÀI TAROT
-          </HeroUILink>
-        </NavbarItem>
-        <NavbarItem isActive={router.pathname === '/library'}>
-          <HeroUILink 
-            as={Link}
-            href="/library"
-            className={router.pathname === '/library' ? 'text-white font-semibold' : 'text-white/70 hover:text-white'}
-          >
-            BÀI TAROT
-          </HeroUILink>
-        </NavbarItem>
+            {link.disabled ? (
+              <span className="navbar-link inactive">
+                <span className="nav-star">✦</span>
+                {link.label.toUpperCase()}
+              </span>
+            ) : (
+              <HeroUILink 
+                as={Link}
+                href={link.href}
+                className={
+                  router.pathname === link.href 
+                    ? 'navbar-link'
+                    : 'navbar-link inactive hover:text-white'
+                }
+              >
+                <span className="nav-star">✦</span>
+                {link.label.toUpperCase()}
+              </HeroUILink>
+            )}
+          </NavbarItem>
+        ))}
       </NavbarContent>
     </Navbar>
   );

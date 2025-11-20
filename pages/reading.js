@@ -12,14 +12,10 @@ import AppNavbar from '../components/Navbar';
 import Metadata from '../components/Metadata';
 
 const suggestedQuestions = [
-  "Mối quan hệ tiếp theo của tôi có khả năng kéo dài không?",
-  "Người yêu cũ của tôi có còn tình cảm với tôi không?",
-  "Liệu tôi có vượt qua được những thử thách sắp tới không?",
-  "Tôi có thể mong đợi sự cải thiện nào trong tình hình tài chính của mình không?",
-  "Khi nào tôi sẽ gặp được tình yêu mới?",
-  "Sự nghiệp của tôi trong năm tới sẽ phát triển như thế nào?",
-  "Tôi nên làm gì để cải thiện cuộc sống của mình?",
-  "Điều gì đang chờ đợi tôi trong tương lai gần?"
+  "Mối quan hệ mới này có phải là True Love của tôi không?",
+  "Người ấy có hối tiếc về việc chia tay không?",
+  "Tôi sẽ gặp những cơ hội quan trọng nào trong tương lai gần?",
+  "Tôi nên tiếp tục công việc hiện tại hay tìm kiếm một hướng đi mới?"
 ];
 
 export default function Reading() {
@@ -115,54 +111,62 @@ export default function Reading() {
         <AppNavbar />
       
       <div className="container mx-auto px-4 py-12 max-w-5xl">
-        {/* Main Title */}
-        <h1 className="text-4xl md:text-5xl font-serif text-[#D4AF37] mb-8 text-center">
-          ĐẶT CÂU HỎI CHO TRẢI BÀI TAROT
-        </h1>
-
         {/* Question Input Section */}
-        <div className="mb-8">
-          <div className="flex gap-2 mb-6">
-            <Input
-              placeholder="Khi nào tôi sẽ gặp được tình yêu mới?"
-              value={question}
-              onChange={(e) => setQuestion(e.target.value)}
-              className="flex-1"
-              classNames={{
-                input: "text-white placeholder:text-gray-500",
-                inputWrapper: "bg-[#2a2a2a] border-gray-700 hover:border-[#D4AF37]/50 focus-within:border-[#D4AF37]"
-              }}
-              onKeyPress={(e) => {
-                if (e.key === 'Enter' && question.trim() && !loading) {
-                  handleReading();
-                }
-              }}
-            />
-            <Button
-              className="bg-white text-black hover:bg-gray-200 min-w-[50px]"
-              onClick={handleReading}
-              disabled={loading || !question.trim()}
-            >
-              ↑
-            </Button>
-          </div>
+        <div className="mb-12">
+          <div className="bg-[#111010] border border-[#2a1f17] rounded-[32px] px-8 py-10 shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
+            <p className="text-center text-xs md:text-sm tracking-[0.5em] text-[#c08b45] uppercase mb-4">
+              ĐẶT CÂU HỎI
+            </p>
+            <h1 className="text-3xl md:text-4xl font-serif text-[#f5f0e5] text-center mb-8">
+              Đặt câu hỏi cho trải bài Tarot
+            </h1>
 
-          {/* Suggested Questions Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            {suggestedQuestions.slice(0, 4).map((suggestedQ, index) => (
+            <div className="flex gap-3 mb-8 items-stretch">
+              <Input
+                placeholder="Khi nào tôi sẽ gặp được tình yêu mới?"
+                value={question}
+                onChange={(e) => setQuestion(e.target.value)}
+                className="flex-1"
+                classNames={{
+                  input: "text-white placeholder:text-gray-500 text-lg",
+                  inputWrapper:
+                    " bg-[#2c2b2d] border border-transparent hover:border-transparent focus-within:border-transparent px-6 py-5 shadow-[0_15px_45px_rgba(0,0,0,0.45)]",
+                }}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter' && question.trim() && !loading) {
+                    handleReading();
+                  }
+                }}
+              />
               <button
-                key={index}
-                onClick={() => handleSuggestedQuestion(suggestedQ)}
-                className="bg-[#2a2a2a] hover:bg-[#3a3a3a] border border-gray-700 hover:border-[#D4AF37]/50 text-white text-left p-4 rounded transition-all duration-200"
+                onClick={handleReading}
+                disabled={loading || !question.trim()}
+                className={`rounded-full w-14 h-14 flex items-center justify-center shadow-[0_15px_45px_rgba(0,0,0,0.45)] transition-transform ${
+                  loading || !question.trim()
+                    ? 'bg-[#3a3a3c] cursor-not-allowed opacity-70'
+                    : 'bg-[#3a3a3c] hover:scale-[1.05]'
+                }`}
               >
-                {suggestedQ}
+                <span className="text-white text-xl">↑</span>
               </button>
-            ))}
-          </div>
+            </div>
 
-          <p className="text-white/70 text-center text-sm mb-8">
-            Nhấn gửi câu hỏi để bắt đầu xào bài
-          </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              {suggestedQuestions.map((suggestedQ, index) => (
+                <button
+                  key={index}
+                  onClick={() => handleSuggestedQuestion(suggestedQ)}
+                  className="bg-[#1b1b1d] hover:bg-[#262628] border border-[#2f2f32] hover:border-[#c08b45]/50 text-white text-left px-6 py-5 rounded-[20px] transition-all duration-200 text-base md:text-lg shadow-[0_12px_30px_rgba(0,0,0,0.35)]"
+                >
+                  {suggestedQ}
+                </button>
+              ))}
+            </div>
+
+            <p className="text-center text-[#c08b45] text-sm uppercase tracking-[0.3em]">
+              Nhấn gửi câu hỏi để bắt đầu xào bài
+            </p>
+          </div>
         </div>
 
         {/* Cards Display */}

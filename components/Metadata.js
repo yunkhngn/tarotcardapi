@@ -4,7 +4,7 @@ export default function Metadata({
   title = "Tarot Reader - Bói Bài Tarot Miễn Phí",
   description = "Bói bài Tarot miễn phí trực tuyến. Khám phá những thông điệp bí ẩn từ vũ trụ, giải quyết những vấn đề trong tình yêu, công việc và cuộc sống.",
   image = "/tarot.jpeg",
-  url = "https://tarotreader.me"
+  url = "https://tarot.yunkhngn.dev"
 }) {
   return (
     <Head>
