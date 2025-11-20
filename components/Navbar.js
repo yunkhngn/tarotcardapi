@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 const navLinks = [
   { label: 'Bói bài tarot', href: '/reading', key: 'reading' },
   { label: 'Bài tarot', href: '/library', key: 'library' },
+  { label: 'Quote of the Day', href: '/quotes', key: 'quotes' },
   { label: 'API Docs', href: '/api-docs', key: 'api-docs' },
   { label: 'About', href: '/about', key: 'about' },
 ];

@@ -69,36 +69,41 @@ export default function Library() {
             </p>
             
             <div className="max-w-2xl mx-auto">
-              <Input
-                placeholder="Tìm kiếm bài..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full"
-                classNames={{
-                  input: "text-white placeholder:text-[#5f5f60] text-base sm:text-lg",
-                  innerWrapper: `
-                    bg-[#262626]
-                    data-[hover=true]:bg-[#262626]
-                    data-[focus=true]:bg-[#262626]
-                    group-data-[focus=true]:bg-[#262626]
-                    px-5 sm:px-6 py-4
-                  `,
-                  inputWrapper: `
-                    bg-[#262626]
-                    border border-[#3a3a3c]
-                    hover:border-[#4a4a4c]
-                    focus-within:border-[#4a4a4c]
-                    data-[hover=true]:bg-[#262626]
-                    data-[focus=true]:bg-[#262626]
-                    group-data-[focus=true]:bg-[#262626]
-                    focus-within:ring-0
-                    outline-none
-                    rounded-[28px]
-                    shadow-[0_15px_45px_rgba(0,0,0,0.45)]
-                    transition-all
-                  `,
-                }}
-              />
+            <Input
+              placeholder="Tìm kiếm bài..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-70"
+              classNames={{
+                input: `
+                  text-white
+                  placeholder:text-[#5f5f60]
+                  text-base sm:text-lg
+                  !pr-5
+                `,
+
+                innerWrapper: `
+                  bg-[#262626]
+                  data-[hover=true]:bg-[#262626]
+                  data-[focus=true]:bg-[#262626]
+                  group-data-[focus=true]:bg-[#262626]
+                `,
+
+                inputWrapper: `
+                  bg-[#262626]
+                  border border-[#3a3a3c]
+                  hover:border-[#D4AF37]/60
+                  focus-within:border-[#D4AF37]
+                  data-[hover=true]:bg-[#262626]
+                  data-[focus=true]:bg-[#262626]
+                  group-data-[focus=true]:bg-[#262626]
+                  focus-within:ring-0
+                  shadow-[0_15px_45px_rgba(0,0,0,0.45)]
+                  transition-all
+                  min-h-[64px]
+                `,
+              }}
+            />
             </div>
           </CardBody>
         </Card>
