@@ -55,6 +55,7 @@ export const answers = [
   "Tuyệt đối không",
   "Có thể, nhưng cần nỗ lực",
   "Hãy để mọi thứ tự nhiên",
+  "Ăn một bữa ăn ngon",
   "Đừng ép buộc",
   "Sẽ có quý nhân phù trợ",
   "Cần thêm thông tin",
