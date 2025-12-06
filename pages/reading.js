@@ -378,9 +378,8 @@ export default function Reading() {
     input: `
       text-white
       !text-white
-      placeholder:text-[#5f5f60]
+      placeholder:!text-white/40
       text-base sm:text-lg
-      [-webkit-text-fill-color:rgba(255,255,255,0.96)]
     `,
     innerWrapper: `
       !px-5 sm:!px-6 
@@ -441,98 +440,102 @@ export default function Reading() {
           </div>
         </div>
 
-        {/* Card Selection Section */}
-        <Card className="bg-[#111010] border border-[#2a1f17] rounded-[32px] shadow-[0_25px_80px_rgba(0,0,0,0.45)] mb-10">
-          <CardBody className="p-6 sm:p-10">
-            <p className="text-center text-xs md:text-sm tracking-[0.5em] text-[#c08b45] uppercase mb-4">
-              Bước 2
-            </p>
-            <h1 className="text-2xl sm:text-4xl font-serif text-[#f5f0e5] text-center mb-4">
-              Chọn 3 lá bài bạn cảm thấy kết nối nhất
-            </h1>
-            <p className="text-white/70 text-center max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
-              Kéo thả để xem các lá bài, sau đó click vào 3 lá bạn muốn chọn. Hãy hít thở sâu và lắng nghe trực giác của bạn.
-            </p>
-          </CardBody>
-        </Card>
+        {/* Card Selection Section - Only show when question is entered */}
+        {question.trim() && (
+          <>
+            <Card className="bg-[#111010] border border-[#2a1f17] rounded-[32px] shadow-[0_25px_80px_rgba(0,0,0,0.45)] mb-10">
+              <CardBody className="p-6 sm:p-10">
+                <p className="text-center text-xs md:text-sm tracking-[0.5em] text-[#c08b45] uppercase mb-4">
+                  Bước 2
+                </p>
+                <h1 className="text-2xl sm:text-4xl font-serif text-[#f5f0e5] text-center mb-4">
+                  Chọn 3 lá bài bạn cảm thấy kết nối nhất
+                </h1>
+                <p className="text-white/70 text-center max-w-2xl mx-auto text-sm sm:text-base leading-relaxed">
+                  Kéo thả để xem các lá bài, sau đó click vào 3 lá bạn muốn chọn. Hãy hít thở sâu và lắng nghe trực giác của bạn.
+                </p>
+              </CardBody>
+            </Card>
 
-        <div className="mb-12">
-          <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-            <p className="text-white/80 text-sm sm:text-base">
-              Đã chọn <span className="text-[#c08b45] font-semibold">{selectedCards.length}/3</span> lá
-            </p>
-            <Button
-              size="sm"
-              className="bg-transparent border border-[#2a2a2a] text-white hover:border-[#c08b45]"
-              onClick={resetSpread}
-              disabled={isSubmitting || isLoadingCards}
-            >
-              Trải bài mới
-            </Button>
-          </div>
+            <div className="mb-12">
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
+                <p className="text-white/80 text-sm sm:text-base">
+                  Đã chọn <span className="text-[#c08b45] font-semibold">{selectedCards.length}/3</span> lá
+                </p>
+                <Button
+                  size="sm"
+                  className="bg-transparent border border-[#2a2a2a] text-white hover:border-[#c08b45]"
+                  onClick={resetSpread}
+                  disabled={isSubmitting || isLoadingCards}
+                >
+                  Trải bài mới
+                </Button>
+              </div>
 
-          {isLoadingCards ? (
-            <div className="py-20 flex justify-center">
-              <Spinner size="lg" className="text-[#d5a052]" />
-            </div>
-          ) : (
-            <div 
-              ref={rowRef}
-              className="tarot-row flex gap-4 overflow-x-auto pb-4 cursor-grab select-none"
-              style={{ userSelect: 'none' }}
-            >
-              {deck.map((card, index) => {
-                const flipped = revealedIndices.includes(index);
-                const disabled = flipped || selectedCards.length >= 3 || isSubmitting;
-                return (
-                  <button
-                    key={`${card.name}-${index}`}
-                    className={`tarot-card relative flex-shrink-0 ${flipped ? 'is-flipped' : ''} ${disabled ? 'disabled-card' : ''}`}
-                    style={{ aspectRatio: '3 / 5', width: '110px', animationDelay: `${index * 60}ms`, pointerEvents: disabled ? 'none' : 'auto' }}
-                    draggable="false"
-                    onDragStart={(e) => {
-                      e.preventDefault();
-                      return false;
-                    }}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleCardSelect(index);
-                    }}
-                    onMouseDown={(e) => {
-                      e.stopPropagation();
-                    }}
-                    disabled={disabled}
-                  >
-                    <div className="card-inner">
-                      <div className="card-face card-back">
-                        <div className="relative w-full h-full">
-                          <Image 
-                            src="/image/backside.png" 
-                            alt="Mặt sau lá bài" 
-                            fill
-                            className="object-cover"
-                            sizes="110px"
-                          />
+              {isLoadingCards ? (
+                <div className="py-20 flex justify-center">
+                  <Spinner size="lg" className="text-[#d5a052]" />
+                </div>
+              ) : (
+                <div 
+                  ref={rowRef}
+                  className="tarot-row flex gap-4 overflow-x-auto pb-4 cursor-grab select-none"
+                  style={{ userSelect: 'none' }}
+                >
+                  {deck.map((card, index) => {
+                    const flipped = revealedIndices.includes(index);
+                    const disabled = flipped || selectedCards.length >= 3 || isSubmitting;
+                    return (
+                      <button
+                        key={`${card.name}-${index}`}
+                        className={`tarot-card relative flex-shrink-0 ${flipped ? 'is-flipped' : ''} ${disabled ? 'disabled-card' : ''}`}
+                        style={{ aspectRatio: '3 / 5', width: '110px', animationDelay: `${index * 60}ms`, pointerEvents: disabled ? 'none' : 'auto' }}
+                        draggable="false"
+                        onDragStart={(e) => {
+                          e.preventDefault();
+                          return false;
+                        }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleCardSelect(index);
+                        }}
+                        onMouseDown={(e) => {
+                          e.stopPropagation();
+                        }}
+                        disabled={disabled}
+                      >
+                        <div className="card-inner">
+                          <div className="card-face card-back">
+                            <div className="relative w-full h-full">
+                              <Image 
+                                src="/image/backside.png" 
+                                alt="Mặt sau lá bài" 
+                                fill
+                                className="object-cover"
+                                sizes="110px"
+                              />
+                            </div>
+                          </div>
+                          <div className="card-face card-front">
+                            <div className="relative w-full h-full">
+                              <Image 
+                                src={card.image} 
+                                alt={card.name} 
+                                fill
+                                className="object-cover"
+                                sizes="110px"
+                              />
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="card-face card-front">
-                        <div className="relative w-full h-full">
-                          <Image 
-                            src={card.image} 
-                            alt={card.name} 
-                            fill
-                            className="object-cover"
-                            sizes="110px"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </button>
-                );
-              })}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        )}
 
         {selectedCards.length > 0 && (
           <div className="mb-10 bg-[#1b1b1d] border border-[#2f2f32] rounded-2xl p-6">
