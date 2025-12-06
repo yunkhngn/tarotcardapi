@@ -8,7 +8,7 @@ export default function Book3D({ state, answer, onBookClick }) {
   const isAnalyzing = state === 'ANALYZING';
 
   return (
-    <div className="relative perspective-[1500px] w-64 h-80 sm:w-80 sm:h-96 cursor-pointer group" onClick={onBookClick}>
+    <div className="relative perspective-[1500px] w-64 h-80 sm:w-80 sm:h-96 max-w-[85vw] cursor-pointer group" onClick={onBookClick}>
       <motion.div
         className="relative w-full h-full transform-style-3d transition-transform duration-1000"
         animate={{

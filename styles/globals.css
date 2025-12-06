@@ -1,5 +1,6 @@
 @import "tailwindcss";
-@config "../tailwind.config.js"; /* hoặc .js tuỳ file của mày */
+@config "../tailwind.config.js";
+/* hoặc .js tuỳ file của mày */
 
 :root {
   --heroui-background: 0 0% 4%;
@@ -152,6 +153,7 @@ a {
     opacity: 0;
     transform: translateY(25px) rotateZ(2deg);
   }
+
   to {
     opacity: 1;
     transform: translateY(0) rotateZ(0);
@@ -169,10 +171,21 @@ a {
 }
 
 .scrollbar-hide {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 .scrollbar-hide::-webkit-scrollbar {
-  display: none;  /* Chrome, Safari and Opera */
+  display: none;
+  /* Chrome, Safari and Opera */
+}
+
+.transform-style-3d {
+  transform-style: preserve-3d;
+}
+
+.backface-hidden {
+  backface-visibility: hidden;
 }
