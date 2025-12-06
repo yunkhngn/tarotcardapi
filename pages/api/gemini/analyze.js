@@ -107,7 +107,7 @@ export default async function handler(req, res) {
     }
 
     const genAI = new GoogleGenerativeAI(apiKey);
-    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+    const model = genAI.getGenerativeModel({ model: 'gemini-2.5-pro' });
 
     const cardDescriptions = cards.map((card, index) => {
       const positions = ['Quá khứ', 'Hiện tại', 'Tương lai'];
@@ -144,7 +144,7 @@ CẤU TRÚC:
 - Khoảng 3-4 dòng
 
 **Kết luận:**
-- Tóm tắt và triển vọng
+- Tóm tắt và triển vọng, nếu là câu hỏi yes, no question, thì trả lời là yes hoặc no, chắc chắn về đáp án, không chung chung
 - Khoảng 3-4 dòng
 
 **Bói toán bởi**
