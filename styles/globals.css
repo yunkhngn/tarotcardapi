@@ -189,3 +189,42 @@ a {
 .backface-hidden {
   backface-visibility: hidden;
 }
+
+/* Star Chart Form - Fix native input text colors */
+input[type="date"],
+input[type="time"],
+input[type="number"] {
+  color: #f5f5f5 !important;
+  color-scheme: dark;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator,
+input[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+}
+
+/* Fix select/autocomplete dropdown text */
+[data-slot="input-wrapper"] input,
+[data-slot="trigger"] span {
+  color: #f5f5f5 !important;
+}
+
+/* Fix dropdown/select hover and focus states */
+[data-slot="trigger"]:hover,
+[data-slot="trigger"]:focus,
+[data-slot="trigger"][data-focus="true"],
+[data-slot="trigger"][data-open="true"],
+[data-slot="input-wrapper"]:hover,
+[data-slot="input-wrapper"]:focus-within {
+  background-color: #2a2520 !important;
+}
+
+/* Fix listbox items */
+[data-slot="listbox"] [data-slot="base"] {
+  color: #f5f5f5 !important;
+}
+
+[data-slot="listbox"] [data-slot="base"]:hover,
+[data-slot="listbox"] [data-slot="base"][data-hover="true"] {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}

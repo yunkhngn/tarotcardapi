@@ -132,62 +132,56 @@ export default function StarChartPage() {
         
         {/* Main Content */}
         <div className="w-full py-12 sm:py-16">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-              
-              {/* Form Section */}
-              <div className="bg-[#111010] border-2 border-white/20 rounded-lg p-6 sm:p-8">
-                <h2 className="text-2xl font-serif text-[#D4AF37] mb-6">
-                  THÔNG TIN ĐẦU VÀO
-                </h2>
-                <ChartForm onGenerate={handleGenerate} isLoading={isLoading} />
-              </div>
-              
-              {/* Chart Section */}
-              <div className="flex flex-col items-center">
-                {chartData ? (
-                  <>
-                    <div className="bg-[#111010] border-2 border-white/20 rounded-lg p-4 sm:p-6 w-full">
-                      <StarChart ref={chartRef} chartData={chartData} />
-                    </div>
-                    
-                    {/* Download Buttons */}
-                    <div className="flex gap-4 mt-6 w-full">
-                      <Button
-                        onClick={handleDownloadPNG}
-                        className="flex-1 bg-transparent border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 font-semibold rounded-none"
-                      >
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        TẢI PNG
-                      </Button>
-                      <Button
-                        onClick={handleDownloadSVG}
-                        className="flex-1 bg-transparent border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 font-semibold rounded-none"
-                      >
-                        <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                        </svg>
-                        TẢI SVG
-                      </Button>
-                    </div>
-                  </>
-                ) : (
-                  <div className="bg-[#111010] border-2 border-dashed border-white/20 rounded-lg p-8 sm:p-12 w-full flex flex-col items-center justify-center min-h-[400px]">
-                    <div className="text-6xl mb-4 opacity-50">✦</div>
-                    <p className="text-white/50 text-center">
-                      Nhập thông tin và nhấn &quot;Tạo bản đồ sao&quot; để xem kết quả
-                    </p>
-                  </div>
-                )}
-              </div>
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-5xl">
+            
+            {/* Form Section - Compact on top */}
+            <div className="bg-[#111010] border-2 border-white/20 rounded-lg p-6 sm:p-8 mb-8">
+              <h2 className="text-xl font-serif text-[#D4AF37] mb-6 text-center">
+                THÔNG TIN ĐẦU VÀO
+              </h2>
+              <ChartForm onGenerate={handleGenerate} isLoading={isLoading} />
             </div>
             
-            {/* Chart Info */}
-            {chartData && (
-              <div className="mt-12">
-                <ChartInfo chartData={chartData} />
+            {/* Chart Section - Full width below */}
+            {chartData ? (
+              <>
+                <div className="bg-white rounded-lg p-4 sm:p-6 w-full overflow-x-auto">
+                  <StarChart ref={chartRef} chartData={chartData} />
+                </div>
+                
+                {/* Download Buttons */}
+                <div className="flex gap-4 mt-6 w-full">
+                  <Button
+                    onClick={handleDownloadPNG}
+                    className="flex-1 bg-transparent border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 font-semibold rounded-none py-4"
+                  >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    TẢI PNG
+                  </Button>
+                  <Button
+                    onClick={handleDownloadSVG}
+                    className="flex-1 bg-transparent border-2 border-white/30 text-white hover:bg-white/10 hover:border-white/50 font-semibold rounded-none py-4"
+                  >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    TẢI SVG
+                  </Button>
+                </div>
+                
+                {/* Chart Info */}
+                <div className="mt-12">
+                  <ChartInfo chartData={chartData} />
+                </div>
+              </>
+            ) : (
+              <div className="bg-[#111010] border-2 border-dashed border-white/20 rounded-lg p-8 sm:p-12 w-full flex flex-col items-center justify-center min-h-[200px]">
+                <div className="text-4xl mb-4 opacity-50">✦</div>
+                <p className="text-white/50 text-center">
+                  Nhập thông tin và nhấn &quot;Tạo bản đồ sao&quot; để xem kết quả
+                </p>
               </div>
             )}
           </div>

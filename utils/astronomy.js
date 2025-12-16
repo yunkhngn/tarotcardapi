@@ -462,7 +462,7 @@ export function formatZodiacPosition(longitude) {
  * @returns {Object} Complete chart data
  */
 export function calculateChart(params) {
-  const { year, month, day, hour, minute, utcOffset, latitude, longitude } = params;
+  const { year, month, day, hour, minute, utcOffset, latitude, longitude, name, gender, location } = params;
   
   // Calculate Julian Day
   const jd = calculateJulianDay(year, month, day, hour, minute, utcOffset);
@@ -482,7 +482,7 @@ export function calculateChart(params) {
   const planets = calculatePlanetPositions(jd);
   
   return {
-    input: { year, month, day, hour, minute, utcOffset, latitude, longitude },
+    input: { year, month, day, hour, minute, utcOffset, latitude, longitude, name, gender, location },
     julianDay: jd,
     gmst,
     lst,
@@ -490,5 +490,7 @@ export function calculateChart(params) {
     asc,
     houses,
     planets,
+    latitude,
+    longitude,
   };
 }

@@ -1,355 +1,431 @@
 /**
  * ChartForm Component
- * Input form for star chart generation with Vietnam provinces from API
+ * Birth chart input form with cascading Vietnam location dropdowns
  */
 
 import { useState, useEffect, useMemo } from 'react';
-import { Input, Button, Select, SelectItem, Autocomplete, AutocompleteItem } from '@heroui/react';
+import { Input, Button, Select, SelectItem, RadioGroup, Radio } from '@heroui/react';
 import { VIETNAM_PROVINCES } from '../../data/vietnamProvinces';
+
+// Generate arrays for dropdowns
+const DAYS = Array.from({ length: 31 }, (_, i) => i + 1);
+const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
+const YEARS = Array.from({ length: 100 }, (_, i) => new Date().getFullYear() - i);
+const HOURS = Array.from({ length: 12 }, (_, i) => i + 1);
+const MINUTES = Array.from({ length: 60 }, (_, i) => i);
 
 // Common timezone offsets
 const TIMEZONES = [
-  { value: -12, label: 'UTC-12:00' },
-  { value: -11, label: 'UTC-11:00' },
-  { value: -10, label: 'UTC-10:00 (Hawaii)' },
-  { value: -9, label: 'UTC-09:00 (Alaska)' },
-  { value: -8, label: 'UTC-08:00 (Pacific)' },
-  { value: -7, label: 'UTC-07:00 (Mountain)' },
-  { value: -6, label: 'UTC-06:00 (Central)' },
-  { value: -5, label: 'UTC-05:00 (Eastern)' },
-  { value: -4, label: 'UTC-04:00' },
-  { value: -3, label: 'UTC-03:00' },
-  { value: -2, label: 'UTC-02:00' },
-  { value: -1, label: 'UTC-01:00' },
-  { value: 0, label: 'UTC±00:00 (London)' },
-  { value: 1, label: 'UTC+01:00 (Paris)' },
-  { value: 2, label: 'UTC+02:00 (Cairo)' },
-  { value: 3, label: 'UTC+03:00 (Moscow)' },
-  { value: 4, label: 'UTC+04:00 (Dubai)' },
-  { value: 5, label: 'UTC+05:00' },
-  { value: 5.5, label: 'UTC+05:30 (India)' },
-  { value: 6, label: 'UTC+06:00' },
-  { value: 7, label: 'UTC+07:00 (Việt Nam)' },
-  { value: 8, label: 'UTC+08:00 (China)' },
-  { value: 9, label: 'UTC+09:00 (Japan)' },
-  { value: 10, label: 'UTC+10:00 (Sydney)' },
-  { value: 11, label: 'UTC+11:00' },
-  { value: 12, label: 'UTC+12:00 (Auckland)' },
-];
-
-// International presets (for non-Vietnam locations)
-const INTERNATIONAL_PRESETS = [
-  { name: 'Tokyo, Japan', lat: 35.6762, lon: 139.6503, tz: 9 },
-  { name: 'New York, USA', lat: 40.7128, lon: -74.006, tz: -5 },
-  { name: 'London, UK', lat: 51.5074, lon: -0.1278, tz: 0 },
-  { name: 'Sydney, Australia', lat: -33.8688, lon: 151.2093, tz: 10 },
-  { name: 'Paris, France', lat: 48.8566, lon: 2.3522, tz: 1 },
-  { name: 'Dubai, UAE', lat: 25.2048, lon: 55.2708, tz: 4 },
-  { name: 'Singapore', lat: 1.3521, lon: 103.8198, tz: 8 },
-  { name: 'Seoul, South Korea', lat: 37.5665, lon: 126.9780, tz: 9 },
-  { name: 'Bangkok, Thailand', lat: 13.7563, lon: 100.5018, tz: 7 },
+  { value: 7, label: 'GMT +7 (Việt Nam)' },
+  { value: 8, label: 'GMT +8' },
+  { value: 9, label: 'GMT +9' },
+  { value: 0, label: 'GMT ±0' },
+  { value: -5, label: 'GMT -5' },
+  { value: -8, label: 'GMT -8' },
 ];
 
 export default function ChartForm({ onGenerate, isLoading }) {
-  // Get current date/time
+  // Form state
+  const [name, setName] = useState('');
+  const [gender, setGender] = useState('male');
+  
+  // Date state
   const now = new Date();
-  const defaultDate = now.toISOString().split('T')[0];
-  const defaultTime = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+  const [day, setDay] = useState(now.getDate());
+  const [month, setMonth] = useState(now.getMonth() + 1);
+  const [year, setYear] = useState(now.getFullYear());
   
-  const [date, setDate] = useState(defaultDate);
-  const [time, setTime] = useState(defaultTime);
-  const [timezone, setTimezone] = useState(7); // Default to Vietnam
-  const [latitude, setLatitude] = useState('10.8231'); // Ho Chi Minh City
-  const [longitude, setLongitude] = useState('106.6297');
+  // Time state
+  const [hour, setHour] = useState(now.getHours() > 12 ? now.getHours() - 12 : now.getHours() || 12);
+  const [minute, setMinute] = useState(now.getMinutes());
+  const [period, setPeriod] = useState(now.getHours() >= 12 ? 'PM' : 'AM');
+  const [timezone, setTimezone] = useState(7);
   
-  // Vietnam provinces from API
+  // Location state (cascading)
   const [provinces, setProvinces] = useState([]);
-  const [loadingProvinces, setLoadingProvinces] = useState(true);
+  const [districts, setDistricts] = useState([]);
+  const [wards, setWards] = useState([]);
   const [selectedProvince, setSelectedProvince] = useState('');
-  const [showInternational, setShowInternational] = useState(false);
+  const [selectedDistrict, setSelectedDistrict] = useState('');
+  const [selectedWard, setSelectedWard] = useState('');
+  const [loadingProvinces, setLoadingProvinces] = useState(true);
+  const [loadingDistricts, setLoadingDistricts] = useState(false);
   
-  // Fetch Vietnam provinces from API
+  // Coordinates (auto-calculated from province)
+  const [latitude, setLatitude] = useState(10.8231);
+  const [longitude, setLongitude] = useState(106.6297);
+  
+  // Validation state
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
+  
+  // Fetch provinces on mount
   useEffect(() => {
     const fetchProvinces = async () => {
       try {
         const response = await fetch('https://provinces.open-api.vn/api/v2/p/');
         const data = await response.json();
-        
-        // Map provinces with coordinates
-        const provincesWithCoords = data.map((p) => ({
-          code: p.code,
-          name: p.name,
-          codename: p.codename,
-          divisionType: p.division_type,
-          coords: VIETNAM_PROVINCES[p.code] || null,
-        })).filter(p => p.coords); // Only include provinces with known coordinates
-        
-        setProvinces(provincesWithCoords);
+        setProvinces(data);
         setLoadingProvinces(false);
       } catch (error) {
         console.error('Failed to fetch provinces:', error);
         setLoadingProvinces(false);
       }
     };
-    
     fetchProvinces();
   }, []);
   
-  // Handle province selection
-  const handleProvinceSelect = (key) => {
-    if (!key) return;
-    
-    const province = provinces.find(p => String(p.code) === String(key));
-    if (province && province.coords) {
-      setSelectedProvince(String(key));
-      setLatitude(String(province.coords.lat));
-      setLongitude(String(province.coords.lon));
-      setTimezone(7); // Vietnam timezone
+  // Fetch districts when province changes
+  useEffect(() => {
+    if (!selectedProvince) {
+      setDistricts([]);
+      setWards([]);
+      return;
     }
+    
+    const fetchDistricts = async () => {
+      setLoadingDistricts(true);
+      try {
+        const response = await fetch(`https://provinces.open-api.vn/api/v2/p/${selectedProvince}?depth=2`);
+        const data = await response.json();
+        setDistricts(data.districts || []);
+        setSelectedDistrict('');
+        setSelectedWard('');
+        setWards([]);
+        
+        // Set coordinates from province
+        const coords = VIETNAM_PROVINCES[parseInt(selectedProvince)];
+        if (coords) {
+          setLatitude(coords.lat);
+          setLongitude(coords.lon);
+        }
+      } catch (error) {
+        console.error('Failed to fetch districts:', error);
+      }
+      setLoadingDistricts(false);
+    };
+    fetchDistricts();
+  }, [selectedProvince]);
+  
+  // Validate form
+  const validateForm = () => {
+    const newErrors = {};
+    
+    // Name validation
+    if (!name.trim()) {
+      newErrors.name = 'Vui lòng nhập họ tên';
+    } else if (name.trim().length < 2) {
+      newErrors.name = 'Họ tên phải có ít nhất 2 ký tự';
+    }
+    
+    // Date validation
+    const daysInMonth = new Date(year, month, 0).getDate();
+    if (day > daysInMonth) {
+      newErrors.date = `Tháng ${month} chỉ có ${daysInMonth} ngày`;
+    }
+    
+    // Location validation
+    if (!selectedProvince) {
+      newErrors.location = 'Vui lòng chọn tỉnh/thành phố';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
   
-  // Handle international preset selection  
-  const handleInternationalSelect = (key) => {
-    if (!key) return;
+  // Get location display text
+  const locationText = useMemo(() => {
+    const parts = [];
     
-    const preset = INTERNATIONAL_PRESETS.find(p => p.name === key);
-    if (preset) {
-      setLatitude(String(preset.lat));
-      setLongitude(String(preset.lon));
-      setTimezone(preset.tz);
+    if (selectedWard) {
+      const ward = wards.find(w => String(w.code) === selectedWard);
+      if (ward) parts.push(ward.name);
     }
-  };
+    
+    if (selectedDistrict) {
+      const district = districts.find(d => String(d.code) === selectedDistrict);
+      if (district) parts.push(district.name);
+    }
+    
+    if (selectedProvince) {
+      const province = provinces.find(p => String(p.code) === selectedProvince);
+      if (province) parts.push(province.name);
+    }
+    
+    return parts.join(', ') || '';
+  }, [selectedProvince, selectedDistrict, selectedWard, provinces, districts, wards]);
+  
+  // Check if form is valid for button state
+  const isFormValid = useMemo(() => {
+    return name.trim().length >= 2 && selectedProvince;
+  }, [name, selectedProvince]);
   
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    const [year, month, day] = date.split('-').map(Number);
-    const [hour, minute] = time.split(':').map(Number);
+    // Mark all as touched
+    setTouched({ name: true, location: true });
+    
+    // Validate
+    if (!validateForm()) {
+      return;
+    }
+    
+    // Convert 12h to 24h
+    let hour24 = hour;
+    if (period === 'PM' && hour !== 12) hour24 = hour + 12;
+    if (period === 'AM' && hour === 12) hour24 = 0;
     
     onGenerate({
+      name: name.trim(),
+      gender,
       year,
       month,
       day,
-      hour,
+      hour: hour24,
       minute,
       utcOffset: timezone,
-      latitude: parseFloat(latitude),
-      longitude: parseFloat(longitude),
+      latitude,
+      longitude,
+      location: locationText,
     });
+  };
+  
+  // Handle blur for validation feedback
+  const handleBlur = (field) => {
+    setTouched(prev => ({ ...prev, [field]: true }));
+    validateForm();
+  };
+  
+  // Common select styling
+  const selectClasses = {
+    trigger: 'bg-[#2a2520] border-2 border-[#8b7355] hover:border-[#D4AF37] text-white rounded-lg min-h-[44px]',
+    value: 'text-white',
+    popoverContent: 'bg-[#2a2520] border-2 border-[#8b7355]',
+  };
+  
+  const errorSelectClasses = {
+    ...selectClasses,
+    trigger: 'bg-[#2a2520] border-2 border-red-500 hover:border-red-400 text-white rounded-lg min-h-[44px]',
   };
   
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
-      {/* Location Selection Tabs */}
-      <div className="flex gap-2 mb-4">
-        <Button
-          type="button"
-          size="sm"
-          className={`flex-1 rounded-none ${!showInternational 
-            ? 'bg-[#D4AF37] text-black' 
-            : 'bg-transparent border-2 border-white/30 text-white'}`}
-          onClick={() => setShowInternational(false)}
-        >
-          Việt Nam
-        </Button>
-        <Button
-          type="button"
-          size="sm"
-          className={`flex-1 rounded-none ${showInternational 
-            ? 'bg-[#D4AF37] text-black' 
-            : 'bg-transparent border-2 border-white/30 text-white'}`}
-          onClick={() => setShowInternational(true)}
-        >
-          Quốc tế
-        </Button>
-      </div>
-      
-      {/* Vietnam Province Selector */}
-      {!showInternational && (
+      {/* Row 1: Name & Gender */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
         <div>
           <label className="block text-white/70 text-sm uppercase tracking-wider mb-2">
-            Tỉnh / Thành phố
+            Họ tên <span className="text-red-400">*</span>
           </label>
-          {loadingProvinces ? (
-            <div className="bg-[#1a1512] border-2 border-white/20 p-4 text-white/50 text-center">
-              Đang tải danh sách tỉnh thành...
-            </div>
-          ) : (
-            <Autocomplete
-              placeholder="Tìm tỉnh thành..."
-              selectedKey={selectedProvince}
-              onSelectionChange={handleProvinceSelect}
-              classNames={{
-                base: 'w-full',
-                listboxWrapper: 'bg-[#1a1512] border-2 border-white/20',
-                popoverContent: 'bg-[#1a1512]',
-              }}
-              inputProps={{
-                classNames: {
-                  inputWrapper: 'bg-[#1a1512] border-2 border-white/20 hover:border-white/40',
-                  input: 'text-white placeholder:text-white/40',
-                },
-              }}
-              listboxProps={{
-                itemClasses: {
-                  base: 'text-white data-[hover=true]:bg-white/10',
-                },
-              }}
-            >
-              {provinces.map((province) => (
-                <AutocompleteItem key={String(province.code)} textValue={province.name}>
-                  <div className="flex flex-col">
-                    <span className="text-white">{province.name}</span>
-                    <span className="text-white/50 text-xs">
-                      {province.coords.lat.toFixed(4)}°, {province.coords.lon.toFixed(4)}°
-                    </span>
-                  </div>
-                </AutocompleteItem>
-              ))}
-            </Autocomplete>
-          )}
-        </div>
-      )}
-      
-      {/* International Preset Selector */}
-      {showInternational && (
-        <div>
-          <label className="block text-white/70 text-sm uppercase tracking-wider mb-2">
-            Thành phố quốc tế
-          </label>
-          <Select
-            placeholder="Chọn thành phố..."
-            onSelectionChange={(keys) => handleInternationalSelect(Array.from(keys)[0])}
+          <Input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            onBlur={() => handleBlur('name')}
+            placeholder="Tên người xem"
+            isInvalid={touched.name && errors.name}
+            errorMessage={touched.name && errors.name}
             classNames={{
-              trigger: 'bg-[#1a1512] border-2 border-white/20 hover:border-white/40 text-white',
-              value: 'text-white',
-              popoverContent: 'bg-[#1a1512] border-2 border-white/20',
+              inputWrapper: `bg-[#2a2520] border-2 ${touched.name && errors.name ? 'border-red-500' : 'border-[#8b7355]'} hover:border-[#D4AF37] rounded-lg`,
+              input: 'text-white placeholder:text-white/50',
+              errorMessage: 'text-red-400 text-xs mt-1',
+            }}
+          />
+        </div>
+        <div>
+          <label className="block text-white/70 text-sm uppercase tracking-wider mb-2">
+            Giới tính
+          </label>
+          <RadioGroup
+            orientation="horizontal"
+            value={gender}
+            onValueChange={setGender}
+            classNames={{
+              wrapper: 'gap-6',
             }}
           >
-            {INTERNATIONAL_PRESETS.map((preset) => (
-              <SelectItem key={preset.name} textValue={preset.name}>
-                <div className="flex flex-col">
-                  <span className="text-white">{preset.name}</span>
-                  <span className="text-white/50 text-xs">
-                    {preset.lat.toFixed(4)}°, {preset.lon.toFixed(4)}°
-                  </span>
-                </div>
+            <Radio value="male" classNames={{ label: 'text-white' }}>Nam</Radio>
+            <Radio value="female" classNames={{ label: 'text-white' }}>Nữ</Radio>
+          </RadioGroup>
+        </div>
+      </div>
+      
+      {/* Row 2: Birth Date */}
+      <div>
+        <label className="block text-white/70 text-sm uppercase tracking-wider mb-2">
+          Năm sinh
+        </label>
+        <div className="grid grid-cols-3 gap-2">
+          <Select
+            placeholder="Ngày"
+            selectedKeys={[String(day)]}
+            onSelectionChange={(keys) => setDay(parseInt(Array.from(keys)[0]))}
+            classNames={selectClasses}
+          >
+            {DAYS.map((d) => (
+              <SelectItem key={String(d)} textValue={String(d)}>
+                {d}
+              </SelectItem>
+            ))}
+          </Select>
+          
+          <Select
+            placeholder="Tháng"
+            selectedKeys={[String(month)]}
+            onSelectionChange={(keys) => setMonth(parseInt(Array.from(keys)[0]))}
+            classNames={selectClasses}
+          >
+            {MONTHS.map((m) => (
+              <SelectItem key={String(m)} textValue={`Tháng ${m}`}>
+                Tháng {m}
+              </SelectItem>
+            ))}
+          </Select>
+          
+          <Select
+            placeholder="Năm"
+            selectedKeys={[String(year)]}
+            onSelectionChange={(keys) => setYear(parseInt(Array.from(keys)[0]))}
+            classNames={selectClasses}
+          >
+            {YEARS.map((y) => (
+              <SelectItem key={String(y)} textValue={String(y)}>
+                {y}
               </SelectItem>
             ))}
           </Select>
         </div>
-      )}
-      
-      {/* Date and Time */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-white/70 text-sm uppercase tracking-wider mb-2">
-            Ngày (YYYY-MM-DD)
-          </label>
-          <Input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}
-            classNames={{
-              inputWrapper: 'bg-[#1a1512] border-2 border-white/20 hover:border-white/40',
-              input: 'text-white',
-            }}
-            required
-          />
-        </div>
-        <div>
-          <label className="block text-white/70 text-sm uppercase tracking-wider mb-2">
-            Giờ (HH:MM, 24h)
-          </label>
-          <Input
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            classNames={{
-              inputWrapper: 'bg-[#1a1512] border-2 border-white/20 hover:border-white/40',
-              input: 'text-white',
-            }}
-            required
-          />
-        </div>
       </div>
       
-      {/* Timezone */}
+      {/* Row 3: Birth Time */}
       <div>
         <label className="block text-white/70 text-sm uppercase tracking-wider mb-2">
-          Múi giờ (UTC Offset)
+          Giờ sinh
         </label>
-        <Select
-          selectedKeys={[String(timezone)]}
-          onSelectionChange={(keys) => setTimezone(parseFloat(Array.from(keys)[0]))}
-          classNames={{
-            trigger: 'bg-[#1a1512] border-2 border-white/20 hover:border-white/40 text-white',
-            value: 'text-white',
-            popoverContent: 'bg-[#1a1512] border-2 border-white/20',
-          }}
-        >
-          {TIMEZONES.map((tz) => (
-            <SelectItem key={String(tz.value)} textValue={tz.label}>
-              {tz.label}
-            </SelectItem>
-          ))}
-        </Select>
+        <div className="grid grid-cols-4 gap-3">
+          <Select
+            placeholder="Giờ"
+            selectedKeys={[String(hour)]}
+            onSelectionChange={(keys) => setHour(parseInt(Array.from(keys)[0]))}
+            classNames={selectClasses}
+          >
+            {HOURS.map((h) => (
+              <SelectItem key={String(h)} textValue={String(h)}>
+                {h} giờ
+              </SelectItem>
+            ))}
+          </Select>
+          
+          <Select
+            placeholder="Phút"
+            selectedKeys={[String(minute)]}
+            onSelectionChange={(keys) => setMinute(parseInt(Array.from(keys)[0]))}
+            classNames={selectClasses}
+          >
+            {MINUTES.map((m) => (
+              <SelectItem key={String(m)} textValue={String(m).padStart(2, '0')}>
+                {String(m).padStart(2, '0')} phút
+              </SelectItem>
+            ))}
+          </Select>
+          
+          <Select
+            placeholder="Buổi"
+            selectedKeys={[period]}
+            onSelectionChange={(keys) => setPeriod(Array.from(keys)[0])}
+            classNames={selectClasses}
+          >
+            <SelectItem key="AM" textValue="Sáng">Sáng</SelectItem>
+            <SelectItem key="PM" textValue="Chiều">Chiều</SelectItem>
+          </Select>
+          
+          <Select
+            selectedKeys={[String(timezone)]}
+            onSelectionChange={(keys) => setTimezone(parseInt(Array.from(keys)[0]))}
+            classNames={selectClasses}
+          >
+            {TIMEZONES.map((tz) => (
+              <SelectItem key={String(tz.value)} textValue={tz.label}>
+                {tz.label}
+              </SelectItem>
+            ))}
+          </Select>
+        </div>
       </div>
       
-      {/* Coordinates (editable) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label className="block text-white/70 text-sm uppercase tracking-wider mb-2">
-            Vĩ độ φ (độ)
-          </label>
-          <Input
-            type="number"
-            step="0.0001"
-            min="-90"
-            max="90"
-            value={latitude}
-            onChange={(e) => setLatitude(e.target.value)}
-            placeholder="VD: 10.8231"
-            classNames={{
-              inputWrapper: 'bg-[#1a1512] border-2 border-white/20 hover:border-white/40',
-              input: 'text-white placeholder:text-white/30',
+      {/* Row 4: Birth Place */}
+      <div>
+        <label className="block text-white/70 text-sm uppercase tracking-wider mb-2">
+          Nơi sinh <span className="text-red-400">*</span>
+        </label>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+          {/* Province */}
+          <Select
+            placeholder={loadingProvinces ? "Đang tải..." : "Chọn Tỉnh/Thành phố"}
+            selectedKeys={selectedProvince ? [selectedProvince] : []}
+            onSelectionChange={(keys) => {
+              setSelectedProvince(Array.from(keys)[0] || '');
+              setTouched(prev => ({ ...prev, location: true }));
             }}
-            required
-          />
-          <p className="text-white/40 text-xs mt-1">Bắc dương (+), Nam âm (-)</p>
+            isDisabled={loadingProvinces}
+            classNames={touched.location && errors.location ? errorSelectClasses : selectClasses}
+          >
+            {provinces.map((p) => (
+              <SelectItem key={String(p.code)} textValue={p.name}>
+                {p.name}
+              </SelectItem>
+            ))}
+          </Select>
+          
+          {/* District */}
+          <Select
+            placeholder={loadingDistricts ? "Đang tải..." : "Chọn Quận/Huyện"}
+            selectedKeys={selectedDistrict ? [selectedDistrict] : []}
+            onSelectionChange={(keys) => setSelectedDistrict(Array.from(keys)[0] || '')}
+            isDisabled={!selectedProvince || loadingDistricts || districts.length === 0}
+            classNames={selectClasses}
+          >
+            {districts.map((d) => (
+              <SelectItem key={String(d.code)} textValue={d.name}>
+                {d.name}
+              </SelectItem>
+            ))}
+          </Select>
         </div>
-        <div>
-          <label className="block text-white/70 text-sm uppercase tracking-wider mb-2">
-            Kinh độ λ₀ (độ)
-          </label>
-          <Input
-            type="number"
-            step="0.0001"
-            min="-180"
-            max="180"
-            value={longitude}
-            onChange={(e) => setLongitude(e.target.value)}
-            placeholder="VD: 106.6297"
-            classNames={{
-              inputWrapper: 'bg-[#1a1512] border-2 border-white/20 hover:border-white/40',
-              input: 'text-white placeholder:text-white/30',
-            }}
-            required
-          />
-          <p className="text-white/40 text-xs mt-1">Đông dương (+), Tây âm (-)</p>
-        </div>
+        
+        {/* Error message */}
+        {touched.location && errors.location && (
+          <p className="text-red-400 text-xs mt-2">{errors.location}</p>
+        )}
+        
+        {/* Location preview */}
+        {selectedProvince && !errors.location && (
+          <p className="text-[#D4AF37] text-sm mt-2">
+            {locationText}
+          </p>
+        )}
       </div>
+      
+      {/* Date validation error */}
+      {errors.date && (
+        <p className="text-red-400 text-sm">⚠️ {errors.date}</p>
+      )}
       
       {/* Generate Button */}
       <Button
         type="submit"
         isLoading={isLoading}
-        className="w-full bg-white text-black hover:bg-gray-200 font-semibold text-base py-6 rounded-none border-2 border-black"
+        isDisabled={!isFormValid}
+        className={`w-full font-semibold text-base py-6 rounded-lg transition-all ${
+          isFormValid 
+            ? 'bg-[#D4AF37] text-black hover:bg-[#c9a432]' 
+            : 'bg-[#8b7355] text-white/50 cursor-not-allowed'
+        }`}
       >
-        <span className="nav-star mr-2">✦</span>
         TẠO BẢN ĐỒ SAO
       </Button>
     </form>
   );
 }
+
