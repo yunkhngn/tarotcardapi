@@ -6,6 +6,7 @@ A modern web application for Tarot card readings built with Next.js. Explore the
 
 - **Interactive Tarot Readings**: Manually select 3 cards from a spread and receive AI-powered analysis using Google Gemini
 - **Complete Tarot Library**: Browse all 78 Tarot cards with detailed descriptions and high-quality images
+- **Couple Questions**: Interactive deep talk card game for couples to strengthen relationships
 - **Quote of the Day**: Get daily inspirational quotes with consistent daily selection
 - **Beautiful UI**: Modern, responsive dark-themed interface with glassy effects built with HeroUI and Tailwind CSS
 - **RESTful API**: Comprehensive API endpoints for developers to integrate Tarot functionality
@@ -203,6 +204,24 @@ Returns the quote of the day. Each day will have the same quote based on the day
   "category": "life",
   "id": 1,
   "date": "2025-01-21"
+}
+```
+
+#### Get Couple Questions
+```
+GET /api/couple-questions
+```
+
+Returns list of deep talk questions for couples.
+
+**Response:**
+```json
+{
+  "questions": [
+    "Câu hỏi 1...",
+    "Câu hỏi 2..."
+  ],
+  "total": 175
 }
 ```
 
