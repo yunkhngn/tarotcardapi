@@ -23,8 +23,10 @@ const CardStack = ({ question, index, onSwipe }) => {
   const opacity = useTransform(x, [-200, -100, 0, 100, 200], [0, 1, 1, 1, 0]);
 
   const handleDragEnd = (event, info) => {
-    if (Math.abs(info.offset.x) > 100) {
-      onSwipe();
+    if (info.offset.x < -100) {
+      onSwipe('left');
+    } else if (info.offset.x > 100) {
+      onSwipe('right');
     }
   };
 
@@ -36,7 +38,7 @@ const CardStack = ({ question, index, onSwipe }) => {
       y: 0,
       rotateZ: 0,
       filter: 'blur(0px)',
-      boxShadow: '0 25px 50px rgba(0,0,0,0.5)',
+      boxShadow: '0 0 25px rgba(212, 160, 82, 0.3), 0 0 50px rgba(212, 160, 82, 0.1), 0 25px 50px rgba(0,0,0,0.5)',
       transition: { 
         type: 'spring', 
         stiffness: 300, 
@@ -70,11 +72,11 @@ const CardStack = ({ question, index, onSwipe }) => {
         y: 80,
         filter: 'blur(4px)',
     },
-    exit: (custom) => ({
+    exit: (direction) => ({
       zIndex: 15,
-      x: custom === 'left' ? -1000 : 1000,
+      x: direction === 'left' ? -1000 : 1000,
       opacity: 0,
-      rotateZ: custom === 'left' ? -20 : 20,
+      rotateZ: direction === 'left' ? -20 : 20,
       transition: { duration: 0.4, ease: "easeInOut" },
     })
   };
@@ -101,7 +103,6 @@ const CardStack = ({ question, index, onSwipe }) => {
       initial={{ scale: 0.8, opacity: 0, y: 50 }}
       animate={index === 0 ? [animateVariant, { y: [0, -8, 0], transition: { duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 } }] : animateVariant}
       exit="exit"
-      custom={x.get() < 0 ? 'left' : 'right'}
       drag={index === 0 ? 'x' : false}
       dragConstraints={{ left: 0, right: 0 }}
       onDragEnd={handleDragEnd}
@@ -148,12 +149,14 @@ const CardStack = ({ question, index, onSwipe }) => {
 export default function CoupleQuestions() {
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [direction, setDirection] = useState('right');
 
   useEffect(() => {
     setQuestions(shuffle(coupleQuestions));
   }, []);
 
-  const handleSwipe = () => {
+  const handleSwipe = (swipeDirection) => {
+    setDirection(swipeDirection);
     setCurrentIndex((prev) => (prev + 1) % questions.length);
   };
   
@@ -176,71 +179,87 @@ export default function CoupleQuestions() {
         description="Những câu hỏi sâu sắc giúp các cặp đôi hiểu nhau hơn."
         image="/tarot.jpeg"
       />
-      <div className="min-h-screen bg-[#0b0a0a] flex flex-col font-sans overflow-hidden">
-        <AppNavbar />
+      <div className="min-h-screen bg-[#0b0a0a] flex flex-col font-sans overflow-hidden relative">
+        {/* Floating Background Gradients */}
+        <motion.div 
+          animate={{ 
+            x: [0, 100, 0], 
+            y: [0, -50, 0], 
+            scale: [1, 1.2, 1],
+            opacity: [0.3, 0.5, 0.3] 
+          }}
+          transition={{ 
+            duration: 15, 
+            repeat: Infinity, 
+            ease: "easeInOut" 
+          }}
+          className="absolute top-[-10%] left-[-10%] w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(212,160,82,0.15)_0%,rgba(0,0,0,0)_70%)] rounded-full blur-[80px] pointer-events-none z-0"
+        />
+        
+        <motion.div 
+          animate={{ 
+            x: [0, -80, 0], 
+            y: [0, 60, 0],
+            scale: [1, 1.3, 1],
+            opacity: [0.2, 0.4, 0.2] 
+          }}
+          transition={{ 
+            duration: 20, 
+            repeat: Infinity, 
+            ease: "easeInOut",
+            delay: 2
+          }}
+          className="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-[radial-gradient(circle,rgba(192,139,69,0.1)_0%,rgba(0,0,0,0)_70%)] rounded-full blur-[80px] pointer-events-none z-0"
+        />
 
-        <div className="flex-1 flex flex-col items-center justify-center relative py-12 px-4 mt-8 md:mt-0">
-          <div className="text-center z-10 mb-8">
-             <h1 className="font-playfair text-[#f5f0e5] text-3xl sm:text-4xl tracking-wider mb-3 drop-shadow-md">
-                COUPLE QUESTIONS
-             </h1>
-             <p className="font-mulish text-[#c08b45] text-xs sm:text-sm tracking-[0.4em] uppercase opacity-90">
-                Hiểu nhau sâu sắc hơn
+        <div className="relative z-10 w-full flex flex-col min-h-screen">
+          <AppNavbar />
+
+          <div className="flex-1 flex flex-col items-center justify-center relative py-12 px-4 mt-8 md:mt-0">
+            <div className="text-center z-10 mb-8">
+               <h1 className="font-playfair text-[#f5f0e5] text-3xl sm:text-4xl tracking-wider mb-3 drop-shadow-md">
+                  COUPLE QUESTIONS
+               </h1>
+               <p className="font-mulish text-[#c08b45] text-xs sm:text-sm tracking-[0.4em] uppercase opacity-90">
+                  Hiểu nhau sâu sắc hơn
+               </p>
+            </div>
+
+            <div className="relative w-[300px] h-[450px] flex items-center justify-center">
+              <AnimatePresence custom={direction}>
+               {visibleQuestions.slice().reverse().map((item, index) => {
+                   const stackIndex = visibleQuestions.length - 1 - index;
+                   
+                    return (
+                      <CardStack
+                        key={item.id} 
+                        question={item.question}
+                        index={stackIndex}
+                        onSwipe={handleSwipe}
+                      />
+                    );
+                })}
+              </AnimatePresence>
+            </div>
+
+            <div className="mt-12 z-10">
+               <Button
+                  variant="bordered"
+                  className="bg-[#d4a052] text-[#0b0a0a] hover:bg-[#c08b45] border-none rounded-full w-16 h-16 flex items-center justify-center shadow-[0_0_20px_rgba(212,160,82,0.3)] transition-colors"
+                  onClick={() => handleSwipe('right')}
+                  aria-label="Next"
+               >
+                  <span className="text-2xl">➜</span>
+               </Button>
+            </div>
+            
+             <p className="mt-8 text-white/30 text-xs tracking-widest font-mulish uppercase">
+                Swipe or click to next
              </p>
           </div>
 
-          <div className="relative w-[300px] h-[450px] flex items-center justify-center">
-            <AnimatePresence>
-             {visibleQuestions.slice().reverse().map((item, index) => {
-                 // index 0 in map result will be the bottom-most card (back-most)
-                 // because we reversed. 
-                 // So if array len is 3:
-                 // map index 0 -> original index 2 (back)
-                 // map index 1 -> original index 1 (middle)
-                 // map index 2 -> original index 0 (front - visibleQuestions[0])
-                 
-                 // We want to pass the "stack position" index to the component.
-                 // The front card should have stackIndex 0.
-                 const stackIndex = visibleQuestions.length - 1 - index;
-                 
-                  return (
-                    <CardStack
-                      key={item.id} 
-                      question={item.question}
-                      index={stackIndex} // 0 is front
-                      onSwipe={handleSwipe}
-                    />
-                  );
-              })}
-            </AnimatePresence>
-          </div>
-
-          <div className="mt-12 flex gap-8 z-10">
-             <Button
-                variant="bordered"
-                className="border-[#d4a052] text-[#d4a052] hover:bg-[#d4a052] hover:text-[#0b0a0a] rounded-full w-14 h-14 flex items-center justify-center transition-colors"
-                onClick={handleSwipe}
-                aria-label="Previous"
-             >
-                <span className="text-xl">✕</span>
-             </Button>
-             
-             <Button
-                variant="bordered"
-                className="bg-[#d4a052] text-[#0b0a0a] hover:bg-[#c08b45] border-none rounded-full w-14 h-14 flex items-center justify-center shadow-[0_0_20px_rgba(212,160,82,0.3)] transition-colors"
-                onClick={handleSwipe}
-                aria-label="Next"
-             >
-                <span className="text-xl">➜</span>
-             </Button>
-          </div>
-          
-           <p className="mt-8 text-white/30 text-xs tracking-widest font-mulish uppercase">
-              Swipe or click to next
-           </p>
+          <Footer />
         </div>
-
-        <Footer />
       </div>
     </>
   );
