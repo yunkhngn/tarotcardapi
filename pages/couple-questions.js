@@ -179,7 +179,7 @@ export default function CoupleQuestions() {
         description="Những câu hỏi sâu sắc giúp các cặp đôi hiểu nhau hơn."
         image="/tarot.jpeg"
       />
-      <div className="min-h-screen bg-[#0b0a0a] flex flex-col font-sans overflow-hidden relative">
+      <div className="min-h-screen bg-[#0b0a0a] flex flex-col font-sans relative">
         {/* Floating Background Gradients */}
         <motion.div 
           animate={{ 

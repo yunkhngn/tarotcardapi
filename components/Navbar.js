@@ -1,15 +1,9 @@
 import { useState } from 'react';
 import { 
-  Navbar, 
-  NavbarBrand, 
-  NavbarContent, 
-  NavbarItem, 
-  Link as HeroUILink,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-  Button
 } from '@heroui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -85,7 +79,7 @@ export default function AppNavbar() {
         
         return (
           <Dropdown key={group.label} className="bg-[#111010]/95 border border-[#d4a052]/20 backdrop-blur-md shadow-[0_10px_40px_-10px_rgba(0,0,0,0.8)]" radius="sm">
-            <NavbarItem isActive={isActive}>
+            <div>
               <DropdownTrigger>
                 <button 
                   className={`navbar-item-trigger group ${isActive ? 'data-[active=true]' : ''}`}
@@ -97,7 +91,7 @@ export default function AppNavbar() {
                   <span className="text-[10px] opacity-50 group-hover:translate-y-0.5 transition-transform duration-300">▼</span>
                 </button>
               </DropdownTrigger>
-            </NavbarItem>
+            </div>
             <DropdownMenu 
               aria-label={`${group.label} features`}
               className="w-[340px] p-2"
@@ -142,37 +136,36 @@ export default function AppNavbar() {
 
   return (
     <>
-      <Navbar 
-        className="bg-[#0b0a0a] border-b border-[#2a1f17] p-5 z-50 sticky top-0"
-        maxWidth="full"
-      >
-        <NavbarBrand>
-          <Link 
-            href="/" 
-            className="font-playfair text-white text-xl sm:text-2xl tracking-[0.2em] flex items-center gap-2 hover:opacity-80 transition-opacity"
-          >
-            <span>TAROT READER</span>
-            <span className="text-[#d5a052] text-lg">✦</span>
-          </Link>
-        </NavbarBrand>
+      <nav className=" bg-[#0b0a0a] border-b border-[#2a1f17] px-6 py-4 w-full transition-all duration-300">
+        <div className="w-full max-w-[1536px] mx-auto flex items-center justify-between">
+          <div className="flex-shrink-0">
+            <Link 
+              href="/" 
+              className="font-playfair text-white text-xl sm:text-2xl tracking-[0.2em] flex items-center gap-2 hover:opacity-80 transition-opacity"
+            >
+              <span>TAROT READER</span>
+              <span className="text-[#d5a052] text-lg">✦</span>
+            </Link>
+          </div>
 
-        <div className="flex lg:hidden">
-          <button
-            onClick={() => setMenuOpen(true)}
-            aria-label="Open menu"
-            className="text-white/80 hover:text-white transition-colors"
-          >
-            ☰
-          </button>
+          <div className="flex lg:hidden">
+            <button
+              onClick={() => setMenuOpen(true)}
+              aria-label="Open menu"
+              className="text-white/80 hover:text-white transition-colors"
+            >
+              ☰
+            </button>
+          </div>
+
+          <div className="hidden lg:flex gap-8 justify-center">
+            <DesktopLinks />
+          </div>
         </div>
-
-        <NavbarContent className="hidden lg:flex gap-8" justify="center">
-          <DesktopLinks />
-        </NavbarContent>
-      </Navbar>
+      </nav>
 
       {menuOpen && (
-        <div className="lg:hidden fixed inset-0 z-50 bg-[#0b0a0a] overflow-y-auto">
+        <div className="lg:hidden fixed inset-0 z-[110] bg-[#0b0a0a] overflow-y-auto">
           <div className="flex justify-end p-4">
             <button
               onClick={() => setMenuOpen(false)}
