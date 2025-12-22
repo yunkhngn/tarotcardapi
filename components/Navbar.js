@@ -8,6 +8,7 @@ const navLinks = [
   { label: 'Bài tarot', href: '/library', key: 'library' },
   { label: 'Book of Answers', href: '/book-of-answers', key: 'book-of-answers' },
   { label: 'Star Chart', href: '/star-chart', key: 'star-chart' },
+  { label: 'Couple Questions', href: '/couple-questions', key: 'couple-questions' },
   { label: 'Quote of the Day', href: '/quotes', key: 'quotes' },
   { label: 'API Docs', href: '/api-docs', key: 'api-docs' },
   { label: 'About', href: '/about', key: 'about' },
