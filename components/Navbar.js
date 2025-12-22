@@ -104,13 +104,18 @@ export default function AppNavbar() {
               {group.items.map((item) => (
                 <DropdownItem
                   key={item.key}
+                  as={Link}
+                  href={item.href}
                   description={getShortDescription(item.key)}
                   startContent={<span className="text-xl text-[#d4a052]/80 group-hover:text-[#d4a052] transition-colors">{item.icon}</span>}
                   textValue={item.label}
+                  className="group"
+                  classNames={{
+                    title: "font-serif font-medium tracking-wide text-white group-hover:text-[#d4a052]",
+                    description: "text-white/40 group-hover:text-[#d4a052]/70"
+                  }}
                 >
-                  <Link href={item.href} className="flex-1 block w-full h-full font-serif font-medium tracking-wide">
-                    {item.label}
-                  </Link>
+                  {item.label}
                 </DropdownItem>
               ))}
             </DropdownMenu>
